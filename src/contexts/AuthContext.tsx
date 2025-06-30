@@ -5,7 +5,7 @@ interface User {
   id: string;
   name: string;
   email: string;
-  role: 'student' | 'educator' | 'admin';
+  role: 'student' | 'educator' | 'admin' | 'parent';
   avatar?: string;
 }
 
@@ -40,9 +40,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       // Mock user data based on email
       const mockUser: User = {
         id: '1',
-        name: email.includes('admin') ? 'Dr. Sarah Johnson' : 'Alex Chen',
+        name: email.includes('admin') ? 'Dr. Sarah Johnson' 
+             : email.includes('parent') ? 'Jennifer Smith'
+             : email.includes('teacher') ? 'Prof. Michael Davis'
+             : 'Alex Chen',
         email,
-        role: email.includes('admin') ? 'admin' : email.includes('teacher') ? 'educator' : 'student',
+        role: email.includes('admin') ? 'admin' 
+             : email.includes('parent') ? 'parent'
+             : email.includes('teacher') ? 'educator' 
+             : 'student',
         avatar: `https://api.dicebear.com/7.x/initials/svg?seed=${email}`
       };
       

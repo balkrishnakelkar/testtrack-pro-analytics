@@ -1,81 +1,115 @@
 
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { TestScheduler } from '../components/TestScheduler';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Input } from '@/components/ui/input';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useNavigate } from 'react-router-dom';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, BarChart, Bar } from 'recharts';
-import { Users, TrendingUp, Clock, AlertTriangle, Download, Search, Filter, User, Settings, Bell } from 'lucide-react';
+import { toast } from '@/hooks/use-toast';
+import { 
+  Bell, User, Settings, TrendingUp, Calendar, Users, BookOpen, 
+  BarChart3, FileText, Search, Filter, Download, Eye, Edit, Trash2 
+} from 'lucide-react';
 
 const AdminDashboard = () => {
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-  const [selectedClass, setSelectedClass] = useState('all');
   const [searchTerm, setSearchTerm] = useState('');
+  const [filterSubject, setFilterSubject] = useState('all');
 
-  // Mock data for admin dashboard
-  const cohortPerformanceData = [
-    { date: 'Jan 1', avgScore: 78, testsTaken: 45 },
-    { date: 'Jan 8', avgScore: 82, testsTaken: 52 },
-    { date: 'Jan 15', avgScore: 79, testsTaken: 48 },
-    { date: 'Jan 22', avgScore: 85, testsTaken: 58 },
-    { date: 'Jan 29', avgScore: 87, testsTaken: 61 },
-    { date: 'Feb 5', avgScore: 84, testsTaken: 55 },
-    { date: 'Feb 12', avgScore: 89, testsTaken: 63 }
-  ];
-
-  const subjectPerformanceData = [
-    { subject: 'Mathematics', avgScore: 85, students: 120, improvement: '+5.2%' },
-    { subject: 'Physics', avgScore: 78, students: 98, improvement: '+2.1%' },
-    { subject: 'Chemistry', avgScore: 82, students: 105, improvement: '+7.8%' },
-    { subject: 'Biology', avgScore: 91, students: 87, improvement: '+3.4%' },
-    { subject: 'English', avgScore: 76, students: 134, improvement: '-1.2%' }
-  ];
-
-  const studentData = [
-    { id: '1', name: 'Emma Wilson', email: 'emma.wilson@school.edu', lastTest: '2024-01-12', avgScore: 94, progress: 'excellent', status: 'active' },
-    { id: '2', name: 'Liam Johnson', email: 'liam.johnson@school.edu', lastTest: '2024-01-11', avgScore: 67, progress: 'needs-attention', status: 'active' },
-    { id: '3', name: 'Sophia Brown', email: 'sophia.brown@school.edu', lastTest: '2024-01-10', avgScore: 89, progress: 'good', status: 'active' },
-    { id: '4', name: 'Noah Davis', email: 'noah.davis@school.edu', lastTest: '2024-01-09', avgScore: 82, progress: 'good', status: 'active' },
-    { id: '5', name: 'Olivia Garcia', email: 'olivia.garcia@school.edu', lastTest: '2024-01-08', avgScore: 76, progress: 'fair', status: 'inactive' }
-  ];
-
-  const upcomingTests = [
-    { id: '1', title: 'Calculus Midterm', class: 'AP Calculus', date: '2024-01-20', students: 28 },
-    { id: '2', title: 'Chemistry Lab Quiz', class: 'Chemistry 101', date: '2024-01-21', students: 35 },
-    { id: '3', title: 'Physics Final', class: 'AP Physics', date: '2024-01-25', students: 22 }
-  ];
-
-  const getProgressColor = (progress: string) => {
-    switch (progress) {
-      case 'excellent': return 'bg-success text-white';
-      case 'good': return 'bg-primary text-white';
-      case 'fair': return 'bg-amber-500 text-white';
-      case 'needs-attention': return 'bg-destructive text-white';
-      default: return 'bg-secondary text-secondary-foreground';
+  // Mock data
+  const scheduledTests = [
+    {
+      id: '1',
+      title: 'Mathematics Assessment - Algebra',
+      subject: 'Mathematics',
+      date: '2024-01-16',
+      time: '10:30',
+      duration: 90,
+      groups: ['Grade 10A', 'Grade 10B'],
+      status: 'scheduled',
+      participants: 45
+    },
+    {
+      id: '2',
+      title: 'Physics Quiz - Mechanics',
+      subject: 'Physics',
+      date: '2024-01-17',
+      time: '14:00',
+      duration: 45,
+      groups: ['Grade 11 Science'],
+      status: 'scheduled',
+      participants: 32
     }
+  ];
+
+  const recentResults = [
+    {
+      id: '1',
+      testTitle: 'Chemistry Lab Assessment',
+      subject: 'Chemistry',
+      date: '2024-01-12',
+      participants: 38,
+      avgScore: 84,
+      passRate: 92
+    },
+    {
+      id: '2',
+      testTitle: 'English Literature Essay',
+      subject: 'English',
+      date: '2024-01-10',
+      participants: 42,
+      avgScore: 78,
+      passRate: 85
+    }
+  ];
+
+  const students = [
+    {
+      id: '1',
+      name: 'Emma Johnson',
+      email: 'emma.j@school.edu',
+      grade: 'Grade 10',
+      lastTest: '2024-01-12',
+      avgScore: 87,
+      testsCompleted: 12
+    },
+    {
+      id: '2',
+      name: 'Michael Chen',
+      email: 'michael.c@school.edu',
+      grade: 'Grade 11',
+      lastTest: '2024-01-11',
+      avgScore: 92,
+      testsCompleted: 15
+    }
+  ];
+
+  const handleViewResults = (testId: string) => {
+    navigate(`/results/${testId}`);
   };
 
-  const getProgressLabel = (progress: string) => {
-    switch (progress) {
-      case 'excellent': return 'Excellent';
-      case 'good': return 'Good';
-      case 'fair': return 'Fair';
-      case 'needs-attention': return 'Needs Attention';
-      default: return 'Unknown';
-    }
+  const handleEditTest = (testId: string) => {
+    toast({
+      title: "Edit Test",
+      description: "Test editing functionality would be implemented here."
+    });
   };
 
-  const filteredStudents = studentData.filter(student =>
-    student.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-    student.email.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  const handleDeleteTest = (testId: string) => {
+    toast({
+      title: "Delete Test",
+      description: "Test deletion functionality would be implemented here.",
+      variant: "destructive"
+    });
+  };
 
   return (
     <div className="min-h-screen bg-muted/30">
@@ -89,8 +123,8 @@ const AdminDashboard = () => {
               </div>
               <span className="text-xl font-roboto-slab font-bold text-primary">TestTrack Pro</span>
             </div>
-            <Badge variant="outline" className="text-primary border-primary">
-              Admin Dashboard
+            <Badge variant="secondary">
+              {user?.role === 'admin' ? 'Administrator' : 'Educator'}
             </Badge>
           </div>
 
@@ -98,7 +132,7 @@ const AdminDashboard = () => {
             <Button variant="ghost" size="sm" className="relative">
               <Bell className="h-5 w-5" />
               <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs">
-                2
+                3
               </Badge>
             </Button>
 
@@ -118,7 +152,7 @@ const AdminDashboard = () => {
               <DropdownMenuContent align="end" className="w-56">
                 <DropdownMenuItem onClick={() => navigate('/dashboard')}>
                   <User className="mr-2 h-4 w-4" />
-                  Student View
+                  Switch to Student View
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Settings className="mr-2 h-4 w-4" />
@@ -136,140 +170,201 @@ const AdminDashboard = () => {
 
       {/* Main Content */}
       <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-roboto-slab font-bold text-foreground mb-2">
-            Administrator Dashboard
-          </h1>
-          <p className="text-muted-foreground">
-            Monitor student performance and manage assessments across your institution.
-          </p>
-        </div>
-
-        {/* Key Metrics */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-          <Card className="animate-fade-in">
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Total Students</p>
-                  <p className="text-3xl font-bold text-primary">1,247</p>
-                  <p className="text-sm text-success">+5.2% from last month</p>
-                </div>
-                <Users className="h-8 w-8 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="animate-fade-in" style={{ animationDelay: '100ms' }}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Average Score</p>
-                  <p className="text-3xl font-bold text-primary">84.2%</p>
-                  <p className="text-sm text-success">+2.1% improvement</p>
-                </div>
-                <TrendingUp className="h-8 w-8 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="animate-fade-in" style={{ animationDelay: '200ms' }}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Tests This Week</p>
-                  <p className="text-3xl font-bold text-primary">63</p>
-                  <p className="text-sm text-muted-foreground">8 scheduled</p>
-                </div>
-                <Clock className="h-8 w-8 text-primary" />
-              </div>
-            </CardContent>
-          </Card>
-
-          <Card className="animate-fade-in" style={{ animationDelay: '300ms' }}>
-            <CardContent className="p-6">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm text-muted-foreground">Alerts</p>
-                  <p className="text-3xl font-bold text-destructive">7</p>
-                  <p className="text-sm text-muted-foreground">Require attention</p>
-                </div>
-                <AlertTriangle className="h-8 w-8 text-destructive" />
-              </div>
-            </CardContent>
-          </Card>
+        <div className="mb-8 flex items-center justify-between">
+          <div>
+            <h1 className="text-3xl font-roboto-slab font-bold text-foreground mb-2">
+              {user?.role === 'admin' ? 'Admin Dashboard' : 'Educator Dashboard'}
+            </h1>
+            <p className="text-muted-foreground">
+              Manage assessments, monitor student progress, and analyze performance data.
+            </p>
+          </div>
+          
+          <TestScheduler />
         </div>
 
         <Tabs defaultValue="overview" className="space-y-6">
           <TabsList className="grid w-full grid-cols-4">
             <TabsTrigger value="overview">Overview</TabsTrigger>
-            <TabsTrigger value="students">Students</TabsTrigger>
             <TabsTrigger value="tests">Tests</TabsTrigger>
-            <TabsTrigger value="reports">Reports</TabsTrigger>
+            <TabsTrigger value="students">Students</TabsTrigger>
+            <TabsTrigger value="analytics">Analytics</TabsTrigger>
           </TabsList>
 
           <TabsContent value="overview" className="space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {/* Cohort Performance Chart */}
-              <Card className="animate-fade-in">
-                <CardHeader>
-                  <CardTitle>Cohort Performance Trend</CardTitle>
-                  <CardDescription>Average scores over the last 7 weeks</CardDescription>
+            {/* Stats Cards */}
+            <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Total Students</CardTitle>
+                  <Users className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <LineChart data={cohortPerformanceData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="date" />
-                      <YAxis domain={[70, 95]} />
-                      <Tooltip />
-                      <Line type="monotone" dataKey="avgScore" stroke="#1A73E8" strokeWidth={3} />
-                    </LineChart>
-                  </ResponsiveContainer>
+                  <div className="text-2xl font-bold">2,847</div>
+                  <p className="text-xs text-muted-foreground">+12% from last month</p>
                 </CardContent>
               </Card>
-
-              {/* Subject Performance */}
-              <Card className="animate-fade-in" style={{ animationDelay: '100ms' }}>
-                <CardHeader>
-                  <CardTitle>Subject Performance</CardTitle>
-                  <CardDescription>Average scores by subject area</CardDescription>
+              
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Active Tests</CardTitle>
+                  <BookOpen className="h-4 w-4 text-muted-foreground" />
                 </CardHeader>
                 <CardContent>
-                  <ResponsiveContainer width="100%" height={300}>
-                    <BarChart data={subjectPerformanceData}>
-                      <CartesianGrid strokeDasharray="3 3" />
-                      <XAxis dataKey="subject" angle={-45} textAnchor="end" height={80} />
-                      <YAxis domain={[70, 95]} />
-                      <Tooltip />
-                      <Bar dataKey="avgScore" fill="#1A73E8" radius={[4, 4, 0, 0]} />
-                    </BarChart>
-                  </ResponsiveContainer>
+                  <div className="text-2xl font-bold">23</div>
+                  <p className="text-xs text-muted-foreground">+2 scheduled today</p>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Avg Score</CardTitle>
+                  <TrendingUp className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">84.2%</div>
+                  <p className="text-xs text-muted-foreground">+3.1% from last week</p>
+                </CardContent>
+              </Card>
+              
+              <Card>
+                <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                  <CardTitle className="text-sm font-medium">Completion Rate</CardTitle>
+                  <BarChart3 className="h-4 w-4 text-muted-foreground" />
+                </CardHeader>
+                <CardContent>
+                  <div className="text-2xl font-bold">94.7%</div>
+                  <p className="text-xs text-muted-foreground">+1.2% from last week</p>
                 </CardContent>
               </Card>
             </div>
 
-            {/* Subject Details */}
-            <Card className="animate-fade-in" style={{ animationDelay: '200ms' }}>
+            {/* Recent Activity */}
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+              <Card>
+                <CardHeader>
+                  <CardTitle>Scheduled Tests</CardTitle>
+                  <CardDescription>Upcoming assessments</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {scheduledTests.slice(0, 3).map(test => (
+                      <div key={test.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{test.title}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {test.date} at {test.time} • {test.participants} students
+                          </p>
+                        </div>
+                        <Badge variant="outline">{test.status}</Badge>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+
+              <Card>
+                <CardHeader>
+                  <CardTitle>Recent Results</CardTitle>
+                  <CardDescription>Latest test performance</CardDescription>
+                </CardHeader>
+                <CardContent>
+                  <div className="space-y-4">
+                    {recentResults.map(result => (
+                      <div key={result.id} className="flex items-center justify-between p-3 border rounded-lg">
+                        <div>
+                          <h4 className="font-medium">{result.testTitle}</h4>
+                          <p className="text-sm text-muted-foreground">
+                            {result.participants} participants • {result.passRate}% pass rate
+                          </p>
+                        </div>
+                        <div className="text-right">
+                          <div className="text-lg font-bold text-primary">{result.avgScore}%</div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
+            </div>
+          </TabsContent>
+
+          <TabsContent value="tests" className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-4">
+                <div className="relative">
+                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                  <Input
+                    placeholder="Search tests..."
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    className="pl-9 w-64"
+                  />
+                </div>
+                <Select value={filterSubject} onValueChange={setFilterSubject}>
+                  <SelectTrigger className="w-40">
+                    <SelectValue placeholder="All Subjects" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="all">All Subjects</SelectItem>
+                    <SelectItem value="mathematics">Mathematics</SelectItem>
+                    <SelectItem value="physics">Physics</SelectItem>
+                    <SelectItem value="chemistry">Chemistry</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button variant="outline">
+                <Download className="h-4 w-4 mr-2" />
+                Export
+              </Button>
+            </div>
+
+            <Card>
               <CardHeader>
-                <CardTitle>Subject Analysis</CardTitle>
-                <CardDescription>Detailed performance metrics by subject</CardDescription>
+                <CardTitle>All Tests</CardTitle>
+                <CardDescription>Manage your assessments</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {subjectPerformanceData.map((subject, index) => (
-                    <div key={index} className="flex items-center justify-between p-4 rounded-lg border border-border">
+                  {scheduledTests.map(test => (
+                    <div key={test.id} className="flex items-center justify-between p-4 border rounded-lg">
                       <div className="flex-1">
-                        <h4 className="font-medium">{subject.subject}</h4>
-                        <p className="text-sm text-muted-foreground">{subject.students} students enrolled</p>
-                      </div>
-                      <div className="text-right">
-                        <div className="text-2xl font-bold text-primary">{subject.avgScore}%</div>
-                        <div className={`text-sm font-medium ${
-                          subject.improvement.startsWith('+') ? 'text-success' : 'text-destructive'
-                        }`}>
-                          {subject.improvement}
+                        <div className="flex items-center space-x-3 mb-2">
+                          <h3 className="font-medium">{test.title}</h3>
+                          <Badge variant={test.status === 'scheduled' ? 'default' : 'secondary'}>
+                            {test.status}
+                          </Badge>
                         </div>
+                        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                          <span>{test.subject}</span>
+                          <span>{test.date} at {test.time}</span>
+                          <span>{test.duration} min</span>
+                          <span>{test.participants} students</span>
+                        </div>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleViewResults(test.id)}
+                        >
+                          <Eye className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleEditTest(test.id)}
+                        >
+                          <Edit className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => handleDeleteTest(test.id)}
+                          className="text-destructive hover:text-destructive"
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
                       </div>
                     </div>
                   ))}
@@ -279,124 +374,33 @@ const AdminDashboard = () => {
           </TabsContent>
 
           <TabsContent value="students" className="space-y-6">
-            {/* Student Management Controls */}
             <Card>
               <CardHeader>
                 <CardTitle>Student Management</CardTitle>
-                <CardDescription>Search and filter students by performance</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex flex-col md:flex-row gap-4 mb-6">
-                  <div className="flex-1">
-                    <div className="relative">
-                      <Search className="absolute left-3 top-3 h-4 w-4 text-muted-foreground" />
-                      <Input
-                        placeholder="Search students by name or email..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                        className="pl-9"
-                      />
-                    </div>
-                  </div>
-                  <Select value={selectedClass} onValueChange={setSelectedClass}>
-                    <SelectTrigger className="w-full md:w-48">
-                      <SelectValue placeholder="Select Class" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="all">All Classes</SelectItem>
-                      <SelectItem value="calculus">AP Calculus</SelectItem>
-                      <SelectItem value="physics">AP Physics</SelectItem>
-                      <SelectItem value="chemistry">Chemistry 101</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <Button variant="outline">
-                    <Filter className="mr-2 h-4 w-4" />
-                    Filter
-                  </Button>
-                </div>
-
-                {/* Student Table */}
-                <div className="border border-border rounded-lg">
-                  <div className="p-4 border-b border-border">
-                    <div className="grid grid-cols-12 gap-4 font-medium text-sm text-muted-foreground">
-                      <div className="col-span-4">Student</div>
-                      <div className="col-span-2">Last Test</div>
-                      <div className="col-span-2">Avg Score</div>
-                      <div className="col-span-2">Progress</div>
-                      <div className="col-span-2">Actions</div>
-                    </div>
-                  </div>
-                  <div className="divide-y divide-border">
-                    {filteredStudents.map((student, index) => (
-                      <div
-                        key={student.id}
-                        className="p-4 hover:bg-muted/50 transition-colors animate-fade-in"
-                        style={{ animationDelay: `${index * 50}ms` }}
-                      >
-                        <div className="grid grid-cols-12 gap-4 items-center">
-                          <div className="col-span-4 flex items-center space-x-3">
-                            <Avatar className="h-8 w-8">
-                              <AvatarImage src={`https://api.dicebear.com/7.x/initials/svg?seed=${student.name}`} />
-                              <AvatarFallback>{student.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
-                            </Avatar>
-                            <div>
-                              <div className="font-medium">{student.name}</div>
-                              <div className="text-sm text-muted-foreground">{student.email}</div>
-                            </div>
-                          </div>
-                          <div className="col-span-2 text-sm">{student.lastTest}</div>
-                          <div className="col-span-2">
-                            <span className="text-lg font-bold text-primary">{student.avgScore}%</span>
-                          </div>
-                          <div className="col-span-2">
-                            <Badge className={getProgressColor(student.progress)}>
-                              {getProgressLabel(student.progress)}
-                            </Badge>
-                          </div>
-                          <div className="col-span-2">
-                            <DropdownMenu>
-                              <DropdownMenuTrigger asChild>
-                                <Button variant="ghost" size="sm">
-                                  Actions
-                                </Button>
-                              </DropdownMenuTrigger>
-                              <DropdownMenuContent>
-                                <DropdownMenuItem>View Details</DropdownMenuItem>
-                                <DropdownMenuItem>Send Message</DropdownMenuItem>
-                                <DropdownMenuItem>Reset Password</DropdownMenuItem>
-                              </DropdownMenuContent>
-                            </DropdownMenu>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-          </TabsContent>
-
-          <TabsContent value="tests" className="space-y-6">
-            <Card>
-              <CardHeader>
-                <CardTitle>Upcoming Tests</CardTitle>
-                <CardDescription>Scheduled assessments requiring attention</CardDescription>
+                <CardDescription>Monitor student progress and performance</CardDescription>
               </CardHeader>
               <CardContent>
                 <div className="space-y-4">
-                  {upcomingTests.map((test, index) => (
-                    <div
-                      key={test.id}
-                      className="flex items-center justify-between p-4 rounded-lg border border-border animate-fade-in"
-                      style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                      <div>
-                        <h4 className="font-medium">{test.title}</h4>
-                        <p className="text-sm text-muted-foreground">{test.class} • {test.students} students</p>
+                  {students.map(student => (
+                    <div key={student.id} className="flex items-center justify-between p-4 border rounded-lg">
+                      <div className="flex items-center space-x-4">
+                        <Avatar className="h-12 w-12">
+                          <AvatarFallback>{student.name.split(' ').map(n => n[0]).join('')}</AvatarFallback>
+                        </Avatar>
+                        <div>
+                          <h3 className="font-medium">{student.name}</h3>
+                          <p className="text-sm text-muted-foreground">{student.email}</p>
+                          <p className="text-sm text-muted-foreground">{student.grade}</p>
+                        </div>
                       </div>
                       <div className="text-right">
-                        <div className="font-medium">{test.date}</div>
-                        <div className="text-sm text-muted-foreground">Scheduled</div>
+                        <div className="flex items-center space-x-4">
+                          <div>
+                            <div className="text-lg font-bold text-primary">{student.avgScore}%</div>
+                            <p className="text-xs text-muted-foreground">{student.testsCompleted} tests</p>
+                          </div>
+                          <Progress value={student.avgScore} className="w-16 h-2" />
+                        </div>
                       </div>
                     </div>
                   ))}
@@ -405,36 +409,22 @@ const AdminDashboard = () => {
             </Card>
           </TabsContent>
 
-          <TabsContent value="reports" className="space-y-6">
+          <TabsContent value="analytics" className="space-y-6">
             <Card>
               <CardHeader>
-                <CardTitle>Export Reports</CardTitle>
-                <CardDescription>Generate comprehensive reports for analysis</CardDescription>
+                <CardTitle>Performance Analytics</CardTitle>
+                <CardDescription>Detailed insights and reports</CardDescription>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-                  <Button variant="outline" className="h-auto p-4 flex flex-col items-start space-y-2">
-                    <Download className="h-5 w-5" />
-                    <div className="text-left">
-                      <div className="font-medium">Student Performance</div>
-                      <div className="text-sm text-muted-foreground">Individual progress reports</div>
-                    </div>
-                  </Button>
-                  
-                  <Button variant="outline" className="h-auto p-4 flex flex-col items-start space-y-2">
-                    <Download className="h-5 w-5" />
-                    <div className="text-left">
-                      <div className="font-medium">Class Analytics</div>
-                      <div className="text-sm text-muted-foreground">Cohort performance data</div>
-                    </div>
-                  </Button>
-                  
-                  <Button variant="outline" className="h-auto p-4 flex flex-col items-start space-y-2">
-                    <Download className="h-5 w-5" />
-                    <div className="text-left">
-                      <div className="font-medium">Test Results</div>
-                      <div className="text-sm text-muted-foreground">Detailed assessment data</div>
-                    </div>
+                <div className="text-center py-12">
+                  <BarChart3 className="h-16 w-16 text-muted-foreground mx-auto mb-4" />
+                  <h3 className="text-lg font-medium mb-2">Advanced Analytics</h3>
+                  <p className="text-muted-foreground mb-4">
+                    Detailed charts and reports would be displayed here using the Recharts library.
+                  </p>
+                  <Button variant="outline">
+                    <FileText className="h-4 w-4 mr-2" />
+                    Generate Report
                   </Button>
                 </div>
               </CardContent>

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -7,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from '@/hooks/use-toast';
-import { Clock, Flag, ChevronLeft, ChevronRight, AlertTriangle } from 'lucide-react';
+import { Clock, Flag, ChevronLeft, ChevronRight, AlertTriangle, Youtube } from 'lucide-react';
 
 interface Question {
   id: string;
@@ -15,6 +14,7 @@ interface Question {
   options: string[];
   correctAnswer: number;
   explanation: string;
+  youtubeUrl?: string;
   image?: string;
 }
 
@@ -29,7 +29,7 @@ const TestInterface = () => {
   const [testStarted, setTestStarted] = useState(false);
   const [showWarning, setShowWarning] = useState(false);
 
-  // Mock test data
+  // Mock test data with YouTube links
   const mockTest = {
     id: testId,
     title: 'Mathematics Assessment - Algebra',
@@ -40,35 +40,40 @@ const TestInterface = () => {
         text: 'What is the solution to the equation 2x + 5 = 13?',
         options: ['x = 3', 'x = 4', 'x = 5', 'x = 6'],
         correctAnswer: 1,
-        explanation: 'Subtract 5 from both sides: 2x = 8, then divide by 2: x = 4'
+        explanation: 'Subtract 5 from both sides: 2x = 8, then divide by 2: x = 4',
+        youtubeUrl: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ' // Example YouTube link
       },
       {
         id: '2',
         text: 'Which of the following is equivalent to (x + 3)²?',
         options: ['x² + 6x + 9', 'x² + 3x + 9', 'x² + 6x + 6', 'x² + 9'],
         correctAnswer: 0,
-        explanation: '(x + 3)² = (x + 3)(x + 3) = x² + 3x + 3x + 9 = x² + 6x + 9'
+        explanation: '(x + 3)² = (x + 3)(x + 3) = x² + 3x + 3x + 9 = x² + 6x + 9',
+        youtubeUrl: 'https://www.youtube.com/watch?v=example1'
       },
       {
         id: '3',
         text: 'If f(x) = 2x - 1, what is f(5)?',
         options: ['9', '10', '11', '12'],
         correctAnswer: 0,
-        explanation: 'f(5) = 2(5) - 1 = 10 - 1 = 9'
+        explanation: 'f(5) = 2(5) - 1 = 10 - 1 = 9',
+        youtubeUrl: 'https://www.youtube.com/watch?v=example2'
       },
       {
         id: '4',
         text: 'What is the slope of the line passing through points (2, 3) and (6, 11)?',
         options: ['1', '2', '3', '4'],
         correctAnswer: 1,
-        explanation: 'Slope = (y₂ - y₁)/(x₂ - x₁) = (11 - 3)/(6 - 2) = 8/4 = 2'
+        explanation: 'Slope = (y₂ - y₁)/(x₂ - x₁) = (11 - 3)/(6 - 2) = 8/4 = 2',
+        youtubeUrl: 'https://www.youtube.com/watch?v=example3'
       },
       {
         id: '5',
         text: 'Which expression is equivalent to 3(x - 2) + 2(x + 1)?',
         options: ['5x - 4', '5x - 6', '5x + 4', 'x - 4'],
         correctAnswer: 0,
-        explanation: '3(x - 2) + 2(x + 1) = 3x - 6 + 2x + 2 = 5x - 4'
+        explanation: '3(x - 2) + 2(x + 1) = 3x - 6 + 2x + 2 = 5x - 4',
+        youtubeUrl: 'https://www.youtube.com/watch?v=example4'
       }
     ] as Question[]
   };
@@ -179,6 +184,7 @@ const TestInterface = () => {
                   <li>• You can flag questions for review</li>
                   <li>• Test will auto-submit when time expires</li>
                   <li>• Ensure stable internet connection</li>
+                  <li>• YouTube help videos available for review after completion</li>
                 </ul>
               </AlertDescription>
             </Alert>
@@ -237,15 +243,28 @@ const TestInterface = () => {
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-4">
                     <h2 className="text-lg font-medium">Question {currentQuestion + 1}</h2>
-                    <Button
-                      variant="ghost"
-                      size="sm"
-                      onClick={handleFlagQuestion}
-                      className={flagged.has(currentQuestion) ? 'text-amber-600 bg-amber-50' : ''}
-                    >
-                      <Flag className="h-4 w-4 mr-1" />
-                      {flagged.has(currentQuestion) ? 'Flagged' : 'Flag'}
-                    </Button>
+                    <div className="flex items-center space-x-2">
+                      {question.youtubeUrl && (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          onClick={() => window.open(question.youtubeUrl, '_blank')}
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                        >
+                          <Youtube className="h-4 w-4 mr-1" />
+                          Help Video
+                        </Button>
+                      )}
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={handleFlagQuestion}
+                        className={flagged.has(currentQuestion) ? 'text-amber-600 bg-amber-50' : ''}
+                      >
+                        <Flag className="h-4 w-4 mr-1" />
+                        {flagged.has(currentQuestion) ? 'Flagged' : 'Flag'}
+                      </Button>
+                    </div>
                   </div>
                   
                   <p className="text-lg leading-relaxed text-foreground">
@@ -354,6 +373,16 @@ const TestInterface = () => {
                     <div className="w-4 h-4 bg-muted rounded"></div>
                     <span>Unanswered ({mockTest.questions.length - answeredCount})</span>
                   </div>
+                </div>
+
+                <div className="mt-6 p-3 bg-blue-50 rounded-lg">
+                  <div className="flex items-center space-x-2 text-blue-700 text-sm">
+                    <Youtube className="h-4 w-4" />
+                    <span className="font-medium">Help Available</span>
+                  </div>
+                  <p className="text-xs text-blue-600 mt-1">
+                    Click "Help Video" for explanatory videos on each question
+                  </p>
                 </div>
               </CardContent>
             </Card>
