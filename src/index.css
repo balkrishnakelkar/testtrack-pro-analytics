@@ -219,6 +219,55 @@
   .avatar-glow:hover {
     box-shadow: 0 0 0 6px rgba(26, 115, 232, 0.2);
   }
+
+  .enhanced-glow {
+    position: relative;
+    transition: all 0.3s ease;
+  }
+
+  .enhanced-glow::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    background: linear-gradient(45deg, 
+      rgba(26, 115, 232, 0.1), 
+      rgba(30, 136, 229, 0.05), 
+      rgba(26, 115, 232, 0.1)
+    );
+    border-radius: inherit;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .enhanced-glow:hover::before {
+    opacity: 1;
+  }
+
+  .morphing-shadow {
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  }
+
+  .morphing-shadow:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 
+      0 20px 40px rgba(26, 115, 232, 0.15),
+      0 10px 20px rgba(0, 0, 0, 0.1),
+      0 0 0 1px rgba(26, 115, 232, 0.1);
+  }
+
+  .gradient-border {
+    position: relative;
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(45deg, rgba(26, 115, 232, 0.2), rgba(30, 136, 229, 0.1)) border-box;
+    border: 2px solid transparent;
+    transition: all 0.3s ease;
+  }
+
+  .gradient-border:hover {
+    background: linear-gradient(white, white) padding-box,
+                linear-gradient(45deg, rgba(26, 115, 232, 0.4), rgba(30, 136, 229, 0.2)) border-box;
+  }
 }
 
 /* Enhanced scrollbars */
@@ -262,44 +311,44 @@
 
 /* Loading animations */
 @keyframes fade-in {
-  '0%': {
-    opacity: '0';
-    transform: 'translateY(20px)';
+  from {
+    opacity: 0;
+    transform: translateY(20px);
   }
-  '100%': {
-    opacity: '1';
-    transform: 'translateY(0)';
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
 }
 
 @keyframes slide-in {
-  '0%': {
-    opacity: '0';
-    transform: 'translateX(-30px)';
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
   }
-  '100%': {
-    opacity: '1';
-    transform: 'translateX(0)';
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
 @keyframes scale-in {
-  '0%': {
-    opacity: '0';
-    transform: 'scale(0.9)';
+  from {
+    opacity: 0;
+    transform: scale(0.9);
   }
-  '100%': {
-    opacity: '1';
-    transform: 'scale(1)';
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
 
 @keyframes progress-fill {
-  '0%': {
-    width: '0%';
+  from {
+    width: 0%;
   }
-  '100%': {
-    width: 'var(--progress-width)';
+  to {
+    width: var(--progress-width);
   }
 }
 
