@@ -101,31 +101,28 @@ ${colorConfig
 
 const ChartTooltip = RechartsPrimitive.Tooltip
 
-type TooltipProps = {
-  active?: boolean
-  payload?: Array<{
-    color?: string
-    dataKey?: string
-    name?: string
-    value?: number
-    payload?: any
-  }>
-  label?: string
-  hideLabel?: boolean
-  hideIndicator?: boolean
-  indicator?: "line" | "dot" | "dashed"
-  nameKey?: string
-  labelKey?: string
-  labelFormatter?: (value: any, payload: any[]) => React.ReactNode
-  formatter?: (value: any, name: any, item: any, index: any, payload: any) => React.ReactNode
-  color?: string
-  className?: string
-  labelClassName?: string
-}
-
 const ChartTooltipContent = React.forwardRef<
   HTMLDivElement,
-  TooltipProps
+  React.ComponentProps<"div"> & {
+    active?: boolean
+    payload?: Array<{
+      color?: string
+      dataKey?: string
+      name?: string
+      value?: number
+      payload?: any
+    }>
+    label?: string
+    hideLabel?: boolean
+    hideIndicator?: boolean
+    indicator?: "line" | "dot" | "dashed"
+    nameKey?: string
+    labelKey?: string
+    labelFormatter?: (value: any, payload: any[]) => React.ReactNode
+    formatter?: (value: any, name: any, item: any, index: any, payload: any) => React.ReactNode
+    color?: string
+    labelClassName?: string
+  }
 >(
   (
     {
@@ -272,21 +269,18 @@ ChartTooltipContent.displayName = "ChartTooltip"
 
 const ChartLegend = RechartsPrimitive.Legend
 
-type LegendProps = {
-  className?: string
-  hideIcon?: boolean
-  payload?: Array<{
-    value?: string
-    color?: string
-    dataKey?: string
-  }>
-  verticalAlign?: "top" | "middle" | "bottom"
-  nameKey?: string
-}
-
 const ChartLegendContent = React.forwardRef<
   HTMLDivElement,
-  LegendProps
+  React.ComponentProps<"div"> & {
+    hideIcon?: boolean
+    payload?: Array<{
+      value?: string
+      color?: string
+      dataKey?: string
+    }>
+    verticalAlign?: "top" | "middle" | "bottom"
+    nameKey?: string
+  }
 >(
   (
     { className, hideIcon = false, payload, verticalAlign = "bottom", nameKey },
