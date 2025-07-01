@@ -6,6 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { toast } from '@/hooks/use-toast';
 
 const LoginScreen = () => {
@@ -35,6 +36,18 @@ const LoginScreen = () => {
       title: "SSO Integration",
       description: "Single Sign-On would redirect to your institution's authentication system.",
     });
+  };
+
+  const demoCredentials = [
+    { role: 'Student', email: 'student@demo.com', password: 'password' },
+    { role: 'Parent', email: 'parent@demo.com', password: 'password' },
+    { role: 'Teacher', email: 'teacher@demo.com', password: 'password' },
+    { role: 'Admin', email: 'admin@demo.com', password: 'password' },
+  ];
+
+  const handleDemoLogin = (demoEmail: string, demoPassword: string) => {
+    setEmail(demoEmail);
+    setPassword(demoPassword);
   };
 
   return (
@@ -106,6 +119,32 @@ const LoginScreen = () => {
               Sign in to your TestTrack Pro account
             </p>
           </div>
+
+          {/* Demo Credentials Card */}
+          <Card className="border-dashed border-2 border-muted-foreground/30">
+            <CardHeader className="pb-3">
+              <CardTitle className="text-sm font-medium text-center">Demo Credentials</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-2">
+              {demoCredentials.map((demo) => (
+                <button
+                  key={demo.role}
+                  onClick={() => handleDemoLogin(demo.email, demo.password)}
+                  className="w-full text-left p-2 rounded-md hover:bg-muted/50 transition-colors group"
+                >
+                  <div className="flex justify-between items-center">
+                    <div>
+                      <div className="text-sm font-medium">{demo.role}</div>
+                      <div className="text-xs text-muted-foreground">{demo.email}</div>
+                    </div>
+                    <div className="text-xs text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity">
+                      Click to use
+                    </div>
+                  </div>
+                </button>
+              ))}
+            </CardContent>
+          </Card>
 
           {error && (
             <Alert className="border-destructive/50 text-destructive">
@@ -206,10 +245,6 @@ const LoginScreen = () => {
               Single Sign-On (SSO)
             </Button>
           </form>
-
-          <p className="text-center text-sm text-muted-foreground">
-            Demo credentials: Try any email/password combination
-          </p>
         </div>
       </div>
     </div>
