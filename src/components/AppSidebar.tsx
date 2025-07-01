@@ -16,7 +16,7 @@ import {
 import { 
   BookOpen, 
   Calculator, 
-  Flask, 
+  Beaker, 
   Globe, 
   Palette, 
   Music, 
@@ -31,7 +31,7 @@ import { useAuth } from '@/contexts/AuthContext';
 
 const subjects = [
   { title: "Mathematics", icon: Calculator, color: "text-blue-600" },
-  { title: "Science", icon: Flask, color: "text-green-600" },
+  { title: "Science", icon: Beaker, color: "text-green-600" },
   { title: "English", icon: BookOpen, color: "text-purple-600" },
   { title: "History", icon: Globe, color: "text-amber-600" },
   { title: "Art", icon: Palette, color: "text-pink-600" },
