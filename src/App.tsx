@@ -18,6 +18,12 @@ import TestSchedule from "./pages/TestSchedule";
 import Achievements from "./pages/Achievements";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
+import Mathematics from "./pages/subjects/Mathematics";
+import Science from "./pages/subjects/Science";
+import English from "./pages/subjects/English";
+import History from "./pages/subjects/History";
+import Art from "./pages/subjects/Art";
+import MusicPage from "./pages/subjects/Music";
 
 const queryClient = new QueryClient();
 
@@ -69,6 +75,12 @@ const AppRoutes = () => {
         <Route path="/achievements" element={<Achievements />} />
         <Route path="/profile" element={<Profile />} />
         <Route path="/settings" element={<Settings />} />
+        <Route path="/subjects/mathematics" element={<Mathematics />} />
+        <Route path="/subjects/science" element={<Science />} />
+        <Route path="/subjects/english" element={<English />} />
+        <Route path="/subjects/history" element={<History />} />
+        <Route path="/subjects/art" element={<Art />} />
+        <Route path="/subjects/music" element={<MusicPage />} />
         <Route path="/test/:testId" element={<TestInterface />} />
         <Route path="/results/:resultId" element={<ResultsAnalytics />} />
         <Route path="/admin" element={<AdminDashboard />} />

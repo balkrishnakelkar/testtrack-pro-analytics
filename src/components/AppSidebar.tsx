@@ -1,4 +1,3 @@
-
 import React from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import {
@@ -30,12 +29,12 @@ import { Badge } from '@/components/ui/badge';
 import { useAuth } from '@/contexts/AuthContext';
 
 const subjects = [
-  { title: "Mathematics", icon: Calculator, color: "text-blue-600" },
-  { title: "Science", icon: Beaker, color: "text-green-600" },
-  { title: "English", icon: BookOpen, color: "text-purple-600" },
-  { title: "History", icon: Globe, color: "text-amber-600" },
-  { title: "Art", icon: Palette, color: "text-pink-600" },
-  { title: "Music", icon: Music, color: "text-indigo-600" },
+  { title: "Mathematics", icon: Calculator, color: "text-blue-600", url: "/subjects/mathematics" },
+  { title: "Science", icon: Beaker, color: "text-green-600", url: "/subjects/science" },
+  { title: "English", icon: BookOpen, color: "text-purple-600", url: "/subjects/english" },
+  { title: "History", icon: Globe, color: "text-amber-600", url: "/subjects/history" },
+  { title: "Art", icon: Palette, color: "text-pink-600", url: "/subjects/art" },
+  { title: "Music", icon: Music, color: "text-indigo-600", url: "/subjects/music" },
 ];
 
 const navigationItems = [
@@ -101,8 +100,11 @@ export function AppSidebar() {
             <SidebarMenu>
               {subjects.map((subject) => (
                 <SidebarMenuItem key={subject.title}>
-                  <SidebarMenuButton className="morphing-shadow">
-                    <div className="flex items-center space-x-2 w-full">
+                  <SidebarMenuButton asChild isActive={isActive(subject.url)}>
+                    <NavLink 
+                      to={subject.url} 
+                      className="flex items-center space-x-2 w-full morphing-shadow"
+                    >
                       <subject.icon className={`h-4 w-4 ${subject.color}`} />
                       {!collapsed && (
                         <span className="flex-1">{subject.title}</span>
@@ -112,7 +114,7 @@ export function AppSidebar() {
                           {Math.floor(Math.random() * 5) + 1}
                         </Badge>
                       )}
-                    </div>
+                    </NavLink>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
