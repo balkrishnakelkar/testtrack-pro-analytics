@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -15,6 +14,10 @@ import AdminDashboard from "./pages/AdminDashboard";
 import NotFound from "./pages/NotFound";
 import { AuthProvider, useAuth } from "./contexts/AuthContext";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import TestSchedule from "./pages/TestSchedule";
+import Achievements from "./pages/Achievements";
+import Profile from "./pages/Profile";
+import Settings from "./pages/Settings";
 
 const queryClient = new QueryClient();
 
@@ -62,6 +65,10 @@ const AppRoutes = () => {
       
       <Route element={<ProtectedRoute />}>
         <Route path="/dashboard" element={<StudentDashboard />} />
+        <Route path="/schedule" element={<TestSchedule />} />
+        <Route path="/achievements" element={<Achievements />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/test/:testId" element={<TestInterface />} />
         <Route path="/results/:resultId" element={<ResultsAnalytics />} />
         <Route path="/admin" element={<AdminDashboard />} />
