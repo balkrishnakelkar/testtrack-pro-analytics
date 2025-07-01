@@ -1,350 +1,292 @@
-
 import React, { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
-import { toast } from '@/hooks/use-toast';
-import { Bell, Clock, User, Settings, ChevronRight, Calendar, Target, TrendingUp } from 'lucide-react';
+import { TrendingUp, Calendar, BookOpen, Award, Clock, Target, Star } from 'lucide-react';
 
 const StudentDashboard = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
   const navigate = useNavigate();
-  const [notifications] = useState(3);
 
-  const upcomingTests = [
+  // Mock data for recent tests
+  const [recentTests, setRecentTests] = useState([
     {
       id: '1',
-      title: 'Mathematics Assessment - Algebra',
       subject: 'Mathematics',
-      duration: '90 minutes',
-      questions: 25,
-      scheduledFor: '2024-01-15T14:00:00',
-      status: 'scheduled'
+      topic: 'Algebra',
+      score: 85,
+      maxScore: 100,
+      date: '2024-01-12',
+      duration: '45 min',
+      grade: 'A-'
     },
     {
       id: '2',
-      title: 'Physics Quiz - Mechanics',
-      subject: 'Physics',
-      duration: '45 minutes',
-      questions: 15,
-      scheduledFor: '2024-01-16T10:30:00',
-      status: 'scheduled'
+      subject: 'English',
+      topic: 'Literature Analysis',
+      score: 92,
+      maxScore: 100,
+      date: '2024-01-10',
+      duration: '60 min',
+      grade: 'A'
     },
     {
       id: '3',
-      title: 'Chemistry Lab Assessment',
-      subject: 'Chemistry',
-      duration: '60 minutes',
-      questions: 20,
-      scheduledFor: '2024-01-18T09:00:00',
-      status: 'available'
+      subject: 'Science',
+      topic: 'Ecology',
+      score: 78,
+      maxScore: 100,
+      date: '2024-01-08',
+      duration: '50 min',
+      grade: 'B+'
     }
-  ];
+  ]);
 
-  const recentResults = [
-    { subject: 'Biology', score: 87, date: '2024-01-12', improvement: '+5%' },
-    { subject: 'History', score: 92, date: '2024-01-10', improvement: '+12%' },
-    { subject: 'English', score: 78, date: '2024-01-08', improvement: '-3%' }
-  ];
+  // Mock data for upcoming tests
+  const [upcomingTests, setUpcomingTests] = useState([
+    {
+      id: '1',
+      subject: 'Physics',
+      topic: 'Mechanics',
+      date: '2024-01-16',
+      time: '10:30 AM',
+      duration: '60 min'
+    },
+    {
+      id: '2',
+      subject: 'History',
+      topic: 'World War II',
+      date: '2024-01-18',
+      time: '02:00 PM',
+      duration: '75 min'
+    },
+    {
+      id: '3',
+      subject: 'Chemistry',
+      topic: 'Organic Chemistry',
+      date: '2024-01-20',
+      time: '11:00 AM',
+      duration: '60 min'
+    }
+  ]);
 
-  const getTimeUntilTest = (scheduledFor: string) => {
-    const now = new Date();
-    const testTime = new Date(scheduledFor);
-    const diff = testTime.getTime() - now.getTime();
-    
-    if (diff < 0) return 'Past due';
-    
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    
-    if (days > 0) return `${days}d ${hours}h`;
-    return `${hours}h ${Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))}m`;
-  };
-
-  const handleStartTest = (testId: string) => {
-    navigate(`/test/${testId}`);
-  };
-
-  const handleViewResults = (resultId: string) => {
-    navigate(`/results/${resultId}`);
-  };
+  // Mock data for subject progress
+  const [subjectProgress, setSubjectProgress] = useState([
+    { subject: 'Mathematics', progress: 87, tests: 8, color: 'bg-blue-500' },
+    { subject: 'English', progress: 92, tests: 10, color: 'bg-red-500' },
+    { subject: 'Science', progress: 78, tests: 6, color: 'bg-green-500' },
+    { subject: 'History', progress: 85, tests: 7, color: 'bg-yellow-500' }
+  ]);
 
   return (
-    <div className="min-h-screen bg-muted/30">
-      {/* Header */}
-      <header className="bg-white border-b border-border px-6 py-4">
-        <div className="flex items-center justify-between max-w-7xl mx-auto">
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-2">
-              <div className="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span className="text-white font-bold text-lg">T</span>
+    <div className="p-6 space-y-6">
+      {/* Welcome Section */}
+      <div className="mb-8">
+        <h1 className="text-3xl font-roboto-slab font-bold text-foreground mb-2">
+          Welcome back, {user?.name?.split(' ')[0]}!
+        </h1>
+        <p className="text-muted-foreground">
+          Ready to continue your learning journey? Let's see how you're progressing.
+        </p>
+      </div>
+
+      {/* Stats Overview */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <Card className="card-hover enhanced-glow">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Overall Score</p>
+                <p className="text-3xl font-bold text-primary">87%</p>
               </div>
-              <span className="text-xl font-roboto-slab font-bold text-primary">TestTrack Pro</span>
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <Target className="h-6 w-6 text-primary" />
+              </div>
             </div>
-          </div>
+          </CardContent>
+        </Card>
 
-          <div className="flex items-center space-x-4">
-            <Button variant="ghost" size="sm" className="relative">
-              <Bell className="h-5 w-5" />
-              {notifications > 0 && (
-                <Badge className="absolute -top-1 -right-1 h-5 w-5 flex items-center justify-center p-0 text-xs">
-                  {notifications}
-                </Badge>
-              )}
-            </Button>
+        <Card className="card-hover enhanced-glow">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Tests Completed</p>
+                <p className="text-3xl font-bold text-green-600">12</p>
+              </div>
+              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                <Award className="h-6 w-6 text-green-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="flex items-center space-x-2 h-auto p-2">
-                  <Avatar className="h-8 w-8">
-                    <AvatarImage src={user?.avatar} alt={user?.name} />
-                    <AvatarFallback>{user?.name?.charAt(0) || 'U'}</AvatarFallback>
-                  </Avatar>
-                  <div className="text-left hidden md:block">
-                    <p className="text-sm font-medium">{user?.name}</p>
-                    <p className="text-xs text-muted-foreground capitalize">{user?.role}</p>
-                  </div>
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-56">
-                <DropdownMenuItem onClick={() => navigate('/admin')}>
-                  <User className="mr-2 h-4 w-4" />
-                  Profile
-                </DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Settings className="mr-2 h-4 w-4" />
-                  Settings
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={logout}>
-                  Sign Out
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-        </div>
-      </header>
+        <Card className="card-hover enhanced-glow">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Upcoming Tests</p>
+                <p className="text-3xl font-bold text-amber-600">3</p>
+              </div>
+              <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
+                <Calendar className="h-6 w-6 text-amber-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
 
-      {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-6 py-8">
-        <div className="mb-8">
-          <h1 className="text-3xl font-roboto-slab font-bold text-foreground mb-2">
-            Welcome back, {user?.name?.split(' ')[0]}!
-          </h1>
-          <p className="text-muted-foreground">
-            You have {upcomingTests.length} upcoming assessments and {recentResults.length} recent results to review.
-          </p>
-        </div>
+        <Card className="card-hover enhanced-glow">
+          <CardContent className="p-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm text-muted-foreground">Study Streak</p>
+                <p className="text-3xl font-bold text-purple-600">7 days</p>
+              </div>
+              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
+                <Star className="h-6 w-6 text-purple-600" />
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-          {/* Left Column - Main Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Upcoming Tests */}
-            <Card className="animate-fade-in">
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Calendar className="h-5 w-5 text-primary" />
-                  <span>Upcoming Assessments</span>
-                </CardTitle>
-                <CardDescription>
-                  Scheduled tests and available assessments
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {upcomingTests.map((test, index) => (
-                    <div
-                      key={test.id}
-                      className="flex items-center justify-between p-4 rounded-lg border border-border hover:shadow-md transition-all duration-200"
-                      style={{ animationDelay: `${index * 100}ms` }}
-                    >
-                      <div className="flex-1">
-                        <div className="flex items-center space-x-3 mb-2">
-                          <h3 className="font-medium text-foreground">{test.title}</h3>
-                          <Badge variant={test.status === 'available' ? 'default' : 'secondary'}>
-                            {test.status}
-                          </Badge>
-                        </div>
-                        <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                          <span className="flex items-center space-x-1">
-                            <Clock className="h-4 w-4" />
-                            <span>{test.duration}</span>
-                          </span>
-                          <span>{test.questions} questions</span>
-                          <span>Due in {getTimeUntilTest(test.scheduledFor)}</span>
-                        </div>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Left Column - Main Content */}
+        <div className="lg:col-span-2 space-y-8">
+          {/* Recent Test Results */}
+          <Card className="morphing-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <TrendingUp className="h-5 w-5 text-primary" />
+                <span>Recent Test Results</span>
+              </CardTitle>
+              <CardDescription>
+                Your latest assessment performance
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {recentTests.map((test) => (
+                  <div key={test.id} className="flex items-center justify-between p-4 border rounded-lg test-card">
+                    <div className="flex-1">
+                      <div className="flex items-center space-x-2 mb-1">
+                        <h3 className="font-medium">{test.subject} - {test.topic}</h3>
+                        <Badge variant={test.score >= 90 ? 'default' : test.score >= 70 ? 'secondary' : 'destructive'}>
+                          {test.grade}
+                        </Badge>
                       </div>
-                      <Button
-                        onClick={() => handleStartTest(test.id)}
-                        className="btn-primary"
-                        disabled={test.status !== 'available'}
+                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
+                        <span className="flex items-center space-x-1">
+                          <Calendar className="h-3 w-3" />
+                          <span>{test.date}</span>
+                        </span>
+                        <span className="flex items-center space-x-1">
+                          <Clock className="h-3 w-3" />
+                          <span>{test.duration}</span>
+                        </span>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-2xl font-bold text-primary">{test.score}%</div>
+                      <div className="text-sm text-muted-foreground">of {test.maxScore}</div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* Subject Progress */}
+          <Card className="morphing-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <BookOpen className="h-5 w-5 text-primary" />
+                <span>Subject Progress</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-6">
+                {subjectProgress.map((subject) => (
+                  <div key={subject.subject} className="space-y-2">
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium">{subject.subject}</span>
+                      <span className="text-sm text-muted-foreground">{subject.tests} tests</span>
+                    </div>
+                    <Progress value={subject.progress} className="h-3" />
+                    <div className="flex justify-between text-sm text-muted-foreground">
+                      <span>Progress</span>
+                      <span>{subject.progress}%</span>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Right Column - Sidebar */}
+        <div className="space-y-6">
+          {/* Upcoming Tests */}
+          <Card className="morphing-shadow">
+            <CardHeader>
+              <CardTitle className="flex items-center space-x-2">
+                <Calendar className="h-5 w-5 text-primary" />
+                <span>Upcoming Tests</span>
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <div className="space-y-4">
+                {upcomingTests.map((test) => (
+                  <div key={test.id} className="p-4 border rounded-lg gradient-border">
+                    <h3 className="font-medium mb-2">{test.subject}</h3>
+                    <p className="text-sm text-muted-foreground mb-2">{test.topic}</p>
+                    <div className="flex justify-between text-sm">
+                      <span>{test.date}</span>
+                      <span>{test.time}</span>
+                    </div>
+                    <div className="mt-2">
+                      <Button 
+                        size="sm" 
+                        className="w-full" 
+                        onClick={() => navigate(`/test/${test.id}`)}
                       >
-                        {test.status === 'available' ? 'Begin Test' : 'Scheduled'}
-                        <ChevronRight className="ml-1 h-4 w-4" />
+                        Start Test
                       </Button>
                     </div>
-                  ))}
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Recent Results */}
-            <Card className="animate-fade-in" style={{ animationDelay: '200ms' }}>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <TrendingUp className="h-5 w-5 text-primary" />
-                  <span>Recent Results</span>
-                </CardTitle>
-                <CardDescription>
-                  Your latest assessment performance
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  {recentResults.map((result, index) => (
-                    <div
-                      key={result.subject}
-                      className="flex items-center justify-between p-4 rounded-lg border border-border hover:shadow-md transition-all duration-200 cursor-pointer"
-                      onClick={() => handleViewResults(result.subject.toLowerCase())}
-                      style={{ animationDelay: `${(index + 2) * 100}ms` }}
-                    >
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-2">
-                          <h3 className="font-medium text-foreground">{result.subject}</h3>
-                          <div className="flex items-center space-x-2">
-                            <span className="text-2xl font-bold text-primary">{result.score}%</span>
-                            <span className={`text-sm font-medium ${
-                              result.improvement.startsWith('+') ? 'text-success' : 'text-destructive'
-                            }`}>
-                              {result.improvement}
-                            </span>
-                          </div>
-                        </div>
-                        <div className="flex items-center justify-between">
-                          <span className="text-sm text-muted-foreground">{result.date}</span>
-                          <Progress value={result.score} className="w-24 h-2" />
-                        </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-                <Button variant="outline" className="w-full mt-4">
-                  View All Results
-                  <ChevronRight className="ml-1 h-4 w-4" />
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
-
-          {/* Right Column - Sidebar */}
-          <div className="space-y-6">
-            {/* Progress Overview */}
-            <Card className="animate-slide-in" style={{ animationDelay: '300ms' }}>
-              <CardHeader>
-                <CardTitle className="flex items-center space-x-2">
-                  <Target className="h-5 w-5 text-primary" />
-                  <span>Progress Overview</span>
-                </CardTitle>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-6">
-                  {/* Overall Performance */}
-                  <div className="text-center">
-                    <div className="relative inline-flex items-center justify-center w-24 h-24 mb-4">
-                      <svg className="w-24 h-24 transform -rotate-90" viewBox="0 0 100 100">
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          stroke="currentColor"
-                          strokeWidth="8"
-                          fill="none"
-                          className="text-muted"
-                        />
-                        <circle
-                          cx="50"
-                          cy="50"
-                          r="40"
-                          stroke="currentColor"
-                          strokeWidth="8"
-                          fill="none"
-                          strokeDasharray={`${85 * 2.51} ${100 * 2.51}`}
-                          className="text-primary transition-all duration-1000"
-                        />
-                      </svg>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <span className="text-2xl font-bold text-primary">85%</span>
-                      </div>
-                    </div>
-                    <p className="text-sm text-muted-foreground">Overall Accuracy</p>
                   </div>
+                ))}
+              </div>
+            </CardContent>
+          </Card>
 
-                  {/* Subject Progress */}
-                  <div className="space-y-3">
-                    <h4 className="font-medium text-sm">Subject Performance</h4>
-                    {[
-                      { subject: 'Mathematics', progress: 92 },
-                      { subject: 'Physics', progress: 78 },
-                      { subject: 'Chemistry', progress: 85 },
-                      { subject: 'Biology', progress: 87 }
-                    ].map((item, index) => (
-                      <div key={item.subject} className="space-y-2">
-                        <div className="flex justify-between text-sm">
-                          <span className="text-muted-foreground">{item.subject}</span>
-                          <span className="font-medium">{item.progress}%</span>
-                        </div>
-                        <Progress 
-                          value={item.progress} 
-                          className="h-2"
-                          style={{ 
-                            animationDelay: `${(index + 5) * 100}ms`,
-                            animation: 'progress-fill 1s ease-out forwards'
-                          }}
-                        />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
-
-            {/* Quick Actions */}
-            <Card className="animate-slide-in" style={{ animationDelay: '400ms' }}>
-              <CardHeader>
-                <CardTitle>Quick Actions</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3">
-                <Button variant="outline" className="w-full justify-start">
-                  <Calendar className="mr-2 h-4 w-4" />
-                  View Schedule
-                </Button>
-                <Button variant="outline" className="w-full justify-start">
-                  <TrendingUp className="mr-2 h-4 w-4" />
-                  Performance Reports
-                </Button>
-                <Button 
-                  variant="outline" 
-                  className="w-full justify-start"
-                  onClick={() => {
-                    toast({
-                      title: "Support Center",
-                      description: "Help and support resources would be available here."
-                    });
-                  }}
-                >
-                  <User className="mr-2 h-4 w-4" />
-                  Get Support
-                </Button>
-              </CardContent>
-            </Card>
-          </div>
+          {/* Quick Actions */}
+          <Card className="morphing-shadow">
+            <CardHeader>
+              <CardTitle>Quick Actions</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-3">
+              <Button variant="outline" className="w-full justify-start enhanced-glow">
+                <BookOpen className="mr-2 h-4 w-4" />
+                Study Materials
+              </Button>
+              <Button variant="outline" className="w-full justify-start enhanced-glow">
+                <Calendar className="mr-2 h-4 w-4" />
+                View Schedule
+              </Button>
+              <Button variant="outline" className="w-full justify-start enhanced-glow">
+                <TrendingUp className="mr-2 h-4 w-4" />
+                Performance Report
+              </Button>
+              <Button variant="outline" className="w-full justify-start enhanced-glow">
+                <Award className="mr-2 h-4 w-4" />
+                Achievements
+              </Button>
+            </CardContent>
+          </Card>
         </div>
-      </main>
+      </div>
     </div>
   );
 };
