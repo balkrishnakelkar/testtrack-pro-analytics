@@ -6,7 +6,7 @@ import { Progress } from '@/components/ui/progress';
 import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { toast } from '@/hooks/use-toast';
-import { Clock, Flag, ChevronLeft, ChevronRight, AlertTriangle, Youtube } from 'lucide-react';
+import { Clock, Flag, ChevronLeft, ChevronRight, AlertTriangle, Youtube, CheckCircle } from 'lucide-react';
 
 interface Question {
   id: string;
@@ -159,14 +159,15 @@ const TestInterface = () => {
 
   const answeredCount = Object.keys(answers).length;
   const progressPercentage = (answeredCount / mockTest.questions.length) * 100;
+  const isLastQuestion = currentQuestion === mockTest.questions.length - 1;
 
   if (!testStarted) {
     return (
       <div className="min-h-screen bg-muted/30 flex items-center justify-center p-4">
-        <Card className="w-full max-w-md">
+        <Card className="w-full max-w-md shadow-2xl border-2 border-primary/20">
           <CardContent className="p-8 text-center">
             <div className="mb-6">
-              <div className="w-16 h-16 bg-primary rounded-full flex items-center justify-center mx-auto mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-primary to-primary/80 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg">
                 <Clock className="h-8 w-8 text-white" />
               </div>
               <h1 className="text-2xl font-roboto-slab font-bold mb-2">{mockTest.title}</h1>
@@ -175,7 +176,7 @@ const TestInterface = () => {
               </p>
             </div>
             
-            <Alert className="mb-6 text-left">
+            <Alert className="mb-6 text-left border-2 border-amber-200 bg-amber-50/50">
               <AlertTriangle className="h-4 w-4" />
               <AlertDescription>
                 <strong>Important Instructions:</strong>
@@ -191,7 +192,7 @@ const TestInterface = () => {
             
             <Button 
               onClick={() => setTestStarted(true)}
-              className="w-full btn-primary h-12 text-lg font-medium"
+              className="w-full btn-primary h-12 text-lg font-medium shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
             >
               Start Assessment
             </Button>
@@ -204,20 +205,22 @@ const TestInterface = () => {
   const question = mockTest.questions[currentQuestion];
 
   return (
-    <div className="min-h-screen bg-muted/30">
+    <div className="min-h-screen bg-gradient-to-br from-muted/30 to-muted/60">
       {/* Header */}
-      <header className="bg-white border-b border-border px-6 py-4 sticky top-0 z-10">
+      <header className="bg-white border-b-2 border-primary/20 px-6 py-4 sticky top-0 z-10 shadow-lg">
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center space-x-4">
             <h1 className="text-lg font-roboto-slab font-bold">{mockTest.title}</h1>
-            <Badge variant="outline">
+            <Badge variant="outline" className="border-2 border-primary/30 bg-primary/5 text-primary font-medium">
               Question {currentQuestion + 1} of {mockTest.questions.length}
             </Badge>
           </div>
           
           <div className="flex items-center space-x-4">
-            <div className={`flex items-center space-x-2 px-3 py-2 rounded-lg ${
-              timeRemaining <= 5 * 60 ? 'bg-destructive/10 text-destructive' : 'bg-muted text-muted-foreground'
+            <div className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 shadow-inner ${
+              timeRemaining <= 5 * 60 
+                ? 'bg-destructive/10 text-destructive border-destructive/30' 
+                : 'bg-primary/5 text-primary border-primary/30'
             }`}>
               <Clock className="h-4 w-4" />
               <span className="font-mono font-medium">{formatTime(timeRemaining)}</span>
@@ -226,7 +229,7 @@ const TestInterface = () => {
             <Button
               onClick={handleSubmitTest}
               variant="outline"
-              className="font-medium"
+              className="font-medium border-2 border-primary/30 hover:bg-primary/10 shadow-md hover:shadow-lg transition-all duration-300"
             >
               Submit Test
             </Button>
@@ -238,7 +241,7 @@ const TestInterface = () => {
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Question Content */}
           <div className="lg:col-span-3">
-            <Card className="mb-6">
+            <Card className="mb-6 shadow-xl border-2 border-primary/10 bg-gradient-to-br from-white to-muted/30">
               <CardContent className="p-8">
                 <div className="mb-6">
                   <div className="flex items-center justify-between mb-4">
@@ -249,7 +252,7 @@ const TestInterface = () => {
                           variant="ghost"
                           size="sm"
                           onClick={() => window.open(question.youtubeUrl, '_blank')}
-                          className="text-red-600 hover:text-red-700 hover:bg-red-50"
+                          className="text-red-600 hover:text-red-700 hover:bg-red-50 border border-red-200 shadow-sm"
                         >
                           <Youtube className="h-4 w-4 mr-1" />
                           Help Video
@@ -259,7 +262,11 @@ const TestInterface = () => {
                         variant="ghost"
                         size="sm"
                         onClick={handleFlagQuestion}
-                        className={flagged.has(currentQuestion) ? 'text-amber-600 bg-amber-50' : ''}
+                        className={`border shadow-sm ${
+                          flagged.has(currentQuestion) 
+                            ? 'text-amber-600 bg-amber-50 border-amber-200' 
+                            : 'border-gray-200 hover:bg-amber-50 hover:border-amber-200'
+                        }`}
                       >
                         <Flag className="h-4 w-4 mr-1" />
                         {flagged.has(currentQuestion) ? 'Flagged' : 'Flag'}
@@ -277,20 +284,20 @@ const TestInterface = () => {
                     <button
                       key={index}
                       onClick={() => handleAnswerSelect(index)}
-                      className={`w-full p-4 text-left rounded-lg border-2 transition-all duration-200 hover:border-primary/50 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 ${
+                      className={`w-full p-4 text-left rounded-lg border-2 transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 ${
                         answers[currentQuestion] === index
-                          ? 'border-primary bg-primary/5 text-primary font-medium'
-                          : 'border-border bg-background hover:bg-muted/50'
+                          ? 'border-primary bg-gradient-to-r from-primary/10 to-primary/5 text-primary font-medium shadow-lg'
+                          : 'border-border bg-white hover:bg-primary/5 hover:border-primary/30'
                       }`}
                     >
                       <div className="flex items-center space-x-3">
-                        <div className={`w-5 h-5 rounded-full border-2 flex items-center justify-center ${
+                        <div className={`w-6 h-6 rounded-full border-2 flex items-center justify-center shadow-inner ${
                           answers[currentQuestion] === index
                             ? 'border-primary bg-primary'
-                            : 'border-border'
+                            : 'border-border bg-white'
                         }`}>
                           {answers[currentQuestion] === index && (
-                            <div className="w-2 h-2 bg-white rounded-full"></div>
+                            <div className="w-3 h-3 bg-white rounded-full"></div>
                           )}
                         </div>
                         <span className="flex-1">{option}</span>
@@ -307,35 +314,53 @@ const TestInterface = () => {
                 variant="outline"
                 onClick={handlePrevious}
                 disabled={currentQuestion === 0}
-                className="flex items-center space-x-2"
+                className="flex items-center space-x-2 border-2 border-primary/30 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-300"
               >
                 <ChevronLeft className="h-4 w-4" />
                 <span>Previous</span>
               </Button>
 
               <div className="flex-1 mx-8">
-                <Progress value={progressPercentage} className="h-2" />
-                <p className="text-sm text-muted-foreground text-center mt-2">
+                <div className="relative">
+                  <Progress 
+                    value={progressPercentage} 
+                    className="h-3 bg-gradient-to-r from-muted to-muted/80 rounded-full shadow-inner border border-primary/20"
+                  />
+                  <div 
+                    className="absolute top-0 left-0 h-3 bg-gradient-to-r from-primary to-primary/80 rounded-full shadow-lg transition-all duration-1000"
+                    style={{ width: `${progressPercentage}%` }}
+                  />
+                </div>
+                <p className="text-sm text-muted-foreground text-center mt-2 font-medium">
                   {answeredCount} of {mockTest.questions.length} questions answered
                 </p>
               </div>
 
-              <Button
-                onClick={handleNext}
-                disabled={currentQuestion === mockTest.questions.length - 1}
-                className="btn-primary flex items-center space-x-2"
-              >
-                <span>Next</span>
-                <ChevronRight className="h-4 w-4" />
-              </Button>
+              {isLastQuestion ? (
+                <Button
+                  onClick={handleSubmitTest}
+                  className="btn-primary flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+                >
+                  <CheckCircle className="h-4 w-4" />
+                  <span>Submit Test</span>
+                </Button>
+              ) : (
+                <Button
+                  onClick={handleNext}
+                  className="btn-primary flex items-center space-x-2 shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition-all duration-300"
+                >
+                  <span>Next</span>
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              )}
             </div>
           </div>
 
           {/* Question Navigator */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-24">
+            <Card className="sticky top-24 shadow-xl border-2 border-primary/10 bg-gradient-to-br from-white to-muted/20">
               <CardContent className="p-6">
-                <h3 className="font-medium mb-4">Question Navigator</h3>
+                <h3 className="font-medium mb-4 text-lg">Question Navigator</h3>
                 
                 <div className="grid grid-cols-5 gap-2 mb-6">
                   {mockTest.questions.map((_, index) => {
@@ -344,14 +369,14 @@ const TestInterface = () => {
                       <button
                         key={index}
                         onClick={() => setCurrentQuestion(index)}
-                        className={`w-8 h-8 rounded text-sm font-medium transition-all duration-200 ${
+                        className={`w-8 h-8 rounded-lg text-sm font-medium transition-all duration-300 shadow-md hover:shadow-lg transform hover:-translate-y-1 border-2 ${
                           index === currentQuestion
-                            ? 'bg-primary text-white'
+                            ? 'bg-gradient-to-br from-primary to-primary/80 text-white border-primary/50 shadow-lg'
                             : status === 'answered'
-                            ? 'bg-success text-white'
+                            ? 'bg-gradient-to-br from-green-500 to-green-600 text-white border-green-400'
                             : status === 'flagged'
-                            ? 'bg-amber-500 text-white'
-                            : 'bg-muted text-muted-foreground hover:bg-muted/80'
+                            ? 'bg-gradient-to-br from-amber-500 to-amber-600 text-white border-amber-400'
+                            : 'bg-gradient-to-br from-muted to-muted/80 text-muted-foreground border-muted-foreground/30 hover:from-primary/10 hover:to-primary/5 hover:border-primary/30'
                         }`}
                       >
                         {index + 1}
@@ -361,21 +386,21 @@ const TestInterface = () => {
                 </div>
 
                 <div className="space-y-3 text-sm">
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-success rounded"></div>
-                    <span>Answered ({answeredCount})</span>
+                  <div className="flex items-center space-x-2 p-2 rounded-lg bg-green-50 border border-green-200">
+                    <div className="w-4 h-4 bg-gradient-to-br from-green-500 to-green-600 rounded shadow-sm"></div>
+                    <span className="font-medium">Answered ({answeredCount})</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-amber-500 rounded"></div>
-                    <span>Flagged ({flagged.size})</span>
+                  <div className="flex items-center space-x-2 p-2 rounded-lg bg-amber-50 border border-amber-200">
+                    <div className="w-4 h-4 bg-gradient-to-br from-amber-500 to-amber-600 rounded shadow-sm"></div>
+                    <span className="font-medium">Flagged ({flagged.size})</span>
                   </div>
-                  <div className="flex items-center space-x-2">
-                    <div className="w-4 h-4 bg-muted rounded"></div>
-                    <span>Unanswered ({mockTest.questions.length - answeredCount})</span>
+                  <div className="flex items-center space-x-2 p-2 rounded-lg bg-muted/50 border border-muted-foreground/30">
+                    <div className="w-4 h-4 bg-gradient-to-br from-muted to-muted/80 rounded shadow-sm"></div>
+                    <span className="font-medium">Unanswered ({mockTest.questions.length - answeredCount})</span>
                   </div>
                 </div>
 
-                <div className="mt-6 p-3 bg-blue-50 rounded-lg">
+                <div className="mt-6 p-4 bg-gradient-to-br from-blue-50 to-blue-100 rounded-lg border-2 border-blue-200 shadow-inner">
                   <div className="flex items-center space-x-2 text-blue-700 text-sm">
                     <Youtube className="h-4 w-4" />
                     <span className="font-medium">Help Available</span>
