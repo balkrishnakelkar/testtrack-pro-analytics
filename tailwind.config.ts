@@ -1,3 +1,4 @@
+
 import type { Config } from "tailwindcss";
 
 export default {
@@ -57,21 +58,15 @@ export default {
 					foreground: '#212121'
 				},
 			},
-			fontFamily: {
-				'sans': ['Source Sans 3', 'system-ui', 'sans-serif'],
-				'source': ['Source Sans 3', 'system-ui', 'sans-serif'],
-				'display': ['Source Serif 4', 'Georgia', 'serif'],
-				'serif': ['Source Serif 4', 'Georgia', 'serif'],
-			},
 			fontSize: {
-				'xs': ['0.8125rem', { lineHeight: '1.6' }],
-				'sm': ['0.9375rem', { lineHeight: '1.6' }],
-				'base': ['1.0625rem', { lineHeight: '1.7' }],
-				'lg': ['1.1875rem', { lineHeight: '1.7' }],
-				'xl': ['1.3125rem', { lineHeight: '1.6' }],
-				'2xl': ['1.5625rem', { lineHeight: '1.5' }],
-				'3xl': ['1.9375rem', { lineHeight: '1.4' }],
-				'4xl': ['2.3125rem', { lineHeight: '1.3' }],
+				'xs': ['0.875rem', { lineHeight: '1.6' }],
+				'sm': ['1rem', { lineHeight: '1.6' }],
+				'base': ['1.125rem', { lineHeight: '1.7' }],
+				'lg': ['1.25rem', { lineHeight: '1.7' }],
+				'xl': ['1.375rem', { lineHeight: '1.6' }],
+				'2xl': ['1.625rem', { lineHeight: '1.5' }],
+				'3xl': ['2rem', { lineHeight: '1.4' }],
+				'4xl': ['2.5rem', { lineHeight: '1.3' }],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',

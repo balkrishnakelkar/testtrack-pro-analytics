@@ -42,10 +42,9 @@
   }
 
   body {
-    @apply bg-background text-foreground font-source text-base;
+    @apply bg-background text-foreground text-base;
     font-feature-settings: "rlig" 1, "calt" 1;
     background: radial-gradient(circle at 50% 50%, rgba(26, 115, 232, 0.02) 0%, transparent 50%);
-    letter-spacing: -0.005em;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -53,8 +52,7 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-display font-semibold;
-    letter-spacing: -0.015em;
+    @apply font-semibold;
   }
 
   h1 { @apply text-3xl; }
@@ -70,17 +68,14 @@
 
   button {
     @apply font-medium text-base;
-    letter-spacing: -0.003em;
   }
 
   input, textarea, select {
-    @apply font-source text-base;
-    letter-spacing: -0.003em;
+    @apply text-base;
   }
 
   label {
     @apply font-medium text-sm;
-    letter-spacing: -0.002em;
   }
 }
 
