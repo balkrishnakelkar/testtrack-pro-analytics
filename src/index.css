@@ -43,22 +43,37 @@
   }
 
   body {
-    @apply bg-background text-foreground font-roboto;
+    @apply bg-background text-foreground font-inter;
     font-feature-settings: "rlig" 1, "calt" 1;
     background: radial-gradient(circle at 50% 50%, rgba(26, 115, 232, 0.02) 0%, transparent 50%);
+    letter-spacing: -0.01em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-roboto-slab;
+    @apply font-display font-semibold;
+    letter-spacing: -0.02em;
+  }
+
+  p, span, div {
+    @apply leading-relaxed;
+  }
+
+  button {
+    @apply font-medium;
+    letter-spacing: -0.005em;
   }
 }
 
 @layer components {
   .btn-primary {
-    @apply bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-300;
+    @apply bg-primary text-primary-foreground hover:bg-primary/90 focus:ring-2 focus:ring-primary focus:ring-offset-2 transition-all duration-300 font-medium;
     background: linear-gradient(135deg, rgb(26, 115, 232) 0%, rgb(30, 136, 229) 100%);
     box-shadow: 0 4px 15px rgba(26, 115, 232, 0.2);
     transform: translateY(0);
+    letter-spacing: -0.01em;
   }
 
   .btn-primary:hover {
@@ -72,9 +87,10 @@
   }
 
   .btn-secondary {
-    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border transition-all duration-300;
+    @apply bg-secondary text-secondary-foreground hover:bg-secondary/80 border border-border transition-all duration-300 font-medium;
     backdrop-filter: blur(10px);
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    letter-spacing: -0.005em;
   }
 
   .btn-secondary:hover {
@@ -267,6 +283,22 @@
   .gradient-border:hover {
     background: linear-gradient(white, white) padding-box,
                 linear-gradient(45deg, rgba(26, 115, 232, 0.4), rgba(30, 136, 229, 0.2)) border-box;
+  }
+
+  /* Improved text readability */
+  .text-readable {
+    @apply text-gray-800 leading-relaxed;
+    font-weight: 400;
+  }
+
+  .text-readable-bold {
+    @apply text-gray-900 leading-relaxed;
+    font-weight: 600;
+  }
+
+  .text-readable-light {
+    @apply text-gray-600 leading-relaxed;
+    font-weight: 400;
   }
 }
 
