@@ -155,42 +155,35 @@ const StudentDashboard = () => {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Main Content */}
         <div className="lg:col-span-2 space-y-8">
-          {/* Recent Test Results */}
+          {/* Upcoming Tests */}
           <Card className="morphing-shadow">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <TrendingUp className="h-5 w-5 text-primary" />
-                <span>Recent Test Results</span>
+                <Calendar className="h-5 w-5 text-primary" />
+                <span>Upcoming Tests</span>
               </CardTitle>
               <CardDescription>
-                Your latest assessment performance
+                Your scheduled assessments
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentTests.map((test) => (
-                  <div key={test.id} className="flex items-center justify-between p-4 border rounded-lg test-card">
-                    <div className="flex-1">
-                      <div className="flex items-center space-x-2 mb-1">
-                        <h3 className="font-medium">{test.subject} - {test.topic}</h3>
-                        <Badge variant={test.score >= 90 ? 'default' : test.score >= 70 ? 'secondary' : 'destructive'}>
-                          {test.grade}
-                        </Badge>
-                      </div>
-                      <div className="flex items-center space-x-4 text-sm text-muted-foreground">
-                        <span className="flex items-center space-x-1">
-                          <Calendar className="h-3 w-3" />
-                          <span>{test.date}</span>
-                        </span>
-                        <span className="flex items-center space-x-1">
-                          <Clock className="h-3 w-3" />
-                          <span>{test.duration}</span>
-                        </span>
-                      </div>
+                {upcomingTests.map((test) => (
+                  <div key={test.id} className="p-4 border rounded-lg gradient-border">
+                    <h3 className="font-medium mb-2">{test.subject}</h3>
+                    <p className="text-sm text-muted-foreground mb-2">{test.topic}</p>
+                    <div className="flex justify-between text-sm mb-3">
+                      <span>{test.date}</span>
+                      <span>{test.time}</span>
                     </div>
-                    <div className="text-right">
-                      <div className="text-2xl font-bold text-primary">{test.score}%</div>
-                      <div className="text-sm text-muted-foreground">of {test.maxScore}</div>
+                    <div className="flex items-center justify-between">
+                      <span className="text-sm text-muted-foreground">{test.duration}</span>
+                      <Button 
+                        size="sm" 
+                        onClick={() => navigate(`/test/${test.id}`)}
+                      >
+                        Start Test
+                      </Button>
                     </div>
                   </div>
                 ))}
@@ -228,32 +221,36 @@ const StudentDashboard = () => {
 
         {/* Right Column - Sidebar */}
         <div className="space-y-6">
-          {/* Upcoming Tests */}
+          {/* Recent Test Results */}
           <Card className="morphing-shadow">
             <CardHeader>
               <CardTitle className="flex items-center space-x-2">
-                <Calendar className="h-5 w-5 text-primary" />
-                <span>Upcoming Tests</span>
+                <TrendingUp className="h-5 w-5 text-primary" />
+                <span>Recent Results</span>
               </CardTitle>
+              <CardDescription>
+                Your latest performance
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {upcomingTests.map((test) => (
-                  <div key={test.id} className="p-4 border rounded-lg gradient-border">
-                    <h3 className="font-medium mb-2">{test.subject}</h3>
-                    <p className="text-sm text-muted-foreground mb-2">{test.topic}</p>
-                    <div className="flex justify-between text-sm">
-                      <span>{test.date}</span>
-                      <span>{test.time}</span>
+                {recentTests.map((test) => (
+                  <div key={test.id} className="p-4 border rounded-lg test-card">
+                    <div className="flex items-center space-x-2 mb-1">
+                      <h3 className="font-medium text-sm">{test.subject}</h3>
+                      <Badge variant={test.score >= 90 ? 'default' : test.score >= 70 ? 'secondary' : 'destructive'}>
+                        {test.grade}
+                      </Badge>
                     </div>
-                    <div className="mt-2">
-                      <Button 
-                        size="sm" 
-                        className="w-full" 
-                        onClick={() => navigate(`/test/${test.id}`)}
-                      >
-                        Start Test
-                      </Button>
+                    <p className="text-xs text-muted-foreground mb-2">{test.topic}</p>
+                    <div className="flex justify-between items-center">
+                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
+                        <Calendar className="h-3 w-3" />
+                        <span>{test.date}</span>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-lg font-bold text-primary">{test.score}%</div>
+                      </div>
                     </div>
                   </div>
                 ))}
