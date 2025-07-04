@@ -2,68 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-/* TestTrack Pro Design System */
+/* TestTrack Pro Design System - Professional Light/Dark Theme */
 
 @layer base {
   :root {
-    --background: 248 250 252;
-    --foreground: 15 23 42;
+    /* Light Theme - Clean and Professional */
+    --background: 255 255 255;
+    --foreground: 17 24 39;
 
     --card: 255 255 255;
-    --card-foreground: 15 23 42;
+    --card-foreground: 17 24 39;
 
     --popover: 255 255 255;
-    --popover-foreground: 15 23 42;
+    --popover-foreground: 17 24 39;
 
     --primary: 59 130 246;
     --primary-foreground: 255 255 255;
 
-    --secondary: 241 245 249;
-    --secondary-foreground: 51 65 85;
+    --secondary: 243 244 246;
+    --secondary-foreground: 75 85 99;
 
-    --muted: 248 250 252;
-    --muted-foreground: 100 116 139;
+    --muted: 249 250 251;
+    --muted-foreground: 107 114 128;
 
-    --accent: 241 245 249;
-    --accent-foreground: 59 130 246;
+    --accent: 243 244 246;
+    --accent-foreground: 17 24 39;
 
     --destructive: 239 68 68;
     --destructive-foreground: 255 255 255;
 
-    --border: 226 232 240;
-    --input: 226 232 240;
+    --border: 229 231 235;
+    --input: 229 231 235;
     --ring: 59 130 246;
 
     --radius: 8px;
   }
 
   .dark {
-    --background: 7 11 25;
+    /* Dark Theme - Modern and Eye-Friendly */
+    --background: 17 24 39;
     --foreground: 248 250 252;
 
-    --card: 15 23 42;
+    --card: 30 41 59;
     --card-foreground: 248 250 252;
 
-    --popover: 15 23 42;
+    --popover: 30 41 59;
     --popover-foreground: 248 250 252;
 
     --primary: 99 179 237;
-    --primary-foreground: 15 23 42;
+    --primary-foreground: 17 24 39;
 
-    --secondary: 30 41 59;
+    --secondary: 51 65 85;
     --secondary-foreground: 203 213 225;
 
-    --muted: 30 41 59;
+    --muted: 51 65 85;
     --muted-foreground: 148 163 184;
 
-    --accent: 30 41 59;
+    --accent: 51 65 85;
     --accent-foreground: 99 179 237;
 
     --destructive: 248 113 113;
-    --destructive-foreground: 15 23 42;
+    --destructive-foreground: 17 24 39;
 
-    --border: 51 65 85;
-    --input: 51 65 85;
+    --border: 71 85 105;
+    --input: 71 85 105;
     --ring: 99 179 237;
   }
 
@@ -81,8 +83,14 @@
     transition: background-color 0.3s ease, color 0.3s ease;
   }
 
+  /* Light theme gradient background */
+  body {
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, rgb(249, 250, 251) 100%);
+  }
+
+  /* Dark theme gradient background */
   .dark body {
-    background: linear-gradient(135deg, hsl(var(--background)) 0%, rgb(5, 8, 18) 100%);
+    background: linear-gradient(135deg, hsl(var(--background)) 0%, rgb(15, 23, 42) 100%);
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -101,15 +109,17 @@
   }
 
   button {
-    @apply font-medium text-base;
+    @apply font-medium text-base text-foreground;
   }
 
   input, textarea, select {
-    @apply text-base bg-card text-card-foreground border-border;
+    @apply text-base bg-background text-foreground border-border;
+    color: hsl(var(--foreground));
   }
 
   .dark input, .dark textarea, .dark select {
     @apply bg-card text-card-foreground border-border;
+    color: hsl(var(--card-foreground));
   }
 
   label {
@@ -197,11 +207,11 @@
   }
 
   .glass-card {
-    @apply bg-card/80 backdrop-blur-xl border border-border shadow-lg;
+    @apply bg-card/95 backdrop-blur-xl border border-border shadow-lg;
   }
 
   .dark .glass-card {
-    @apply bg-card/90 border-border shadow-2xl;
+    @apply bg-card/95 border-border shadow-2xl;
     box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
   }
 
@@ -247,140 +257,47 @@
       0 0 0 1px rgba(59, 130, 246, 0.2);
   }
 
-  .icon-bounce {
-    transition: transform 0.3s ease;
-  }
-
-  .icon-bounce:hover {
-    transform: scale(1.2) rotate(5deg);
-    animation: bounce 0.6s ease-in-out;
-  }
-
-  @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: scale(1.2) translateY(0); }
-    40% { transform: scale(1.2) translateY(-8px); }
-    60% { transform: scale(1.2) translateY(-4px); }
-  }
-
-  .pulse-ring {
-    position: relative;
-  }
-
-  .pulse-ring::before {
-    content: '';
-    position: absolute;
-    inset: -4px;
-    border-radius: inherit;
-    background: linear-gradient(45deg, rgba(59, 130, 246, 0.3), transparent, rgba(59, 130, 246, 0.3));
-    animation: pulse-ring 2s ease-in-out infinite;
-    z-index: -1;
-  }
-
-  @keyframes pulse-ring {
-    0%, 100% { transform: scale(1); opacity: 0.5; }
-    50% { transform: scale(1.1); opacity: 0.8; }
-  }
-
-  .question-option {
-    @apply transition-all duration-300 hover:shadow-lg bg-card text-card-foreground border-2 border-border;
-    backdrop-filter: blur(5px);
-  }
-
-  .question-option:hover {
-    transform: translateX(4px);
-    @apply border-primary/30;
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.1);
-  }
-
-  .dark .question-option:hover {
-    box-shadow: 0 4px 15px rgba(59, 130, 246, 0.2);
-  }
-
-  .question-option.selected {
-    @apply bg-primary/10 border-primary;
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-  }
-
-  .dark .question-option.selected {
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.2);
-  }
-
-  .avatar-glow {
-    box-shadow: 0 0 0 4px rgba(59, 130, 246, 0.1);
-    transition: box-shadow 0.3s ease;
-  }
-
-  .avatar-glow:hover {
-    box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.2);
-  }
-
-  .enhanced-glow {
-    position: relative;
-    transition: all 0.3s ease;
-  }
-
-  .enhanced-glow::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    background: linear-gradient(45deg, 
-      rgba(59, 130, 246, 0.2), 
-      rgba(37, 99, 235, 0.1), 
-      rgba(59, 130, 246, 0.2)
-    );
-    border-radius: inherit;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: -1;
-  }
-
-  .enhanced-glow:hover::before {
-    opacity: 1;
-  }
-
-  .morphing-shadow {
-    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  }
-
-  .morphing-shadow:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 
-      0 20px 40px rgba(59, 130, 246, 0.2),
-      0 10px 20px rgba(0, 0, 0, 0.1),
-      0 0 0 1px rgba(59, 130, 246, 0.1);
-  }
-
-  .dark .morphing-shadow:hover {
-    box-shadow: 
-      0 20px 40px rgba(59, 130, 246, 0.3),
-      0 10px 20px rgba(0, 0, 0, 0.4),
-      0 0 0 1px rgba(59, 130, 246, 0.2);
-  }
-
-  .gradient-border {
-    position: relative;
-    background: linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
-                linear-gradient(45deg, rgba(59, 130, 246, 0.3), rgba(37, 99, 235, 0.2)) border-box;
-    border: 2px solid transparent;
-    transition: all 0.3s ease;
-  }
-
-  .gradient-border:hover {
-    background: linear-gradient(hsl(var(--card)), hsl(var(--card))) padding-box,
-                linear-gradient(45deg, rgba(59, 130, 246, 0.5), rgba(37, 99, 235, 0.3)) border-box;
-  }
-
-  /* Improved text readability */
+  /* Enhanced text readability classes */
   .text-readable {
-    @apply text-foreground leading-relaxed;
+    @apply text-foreground;
+    color: hsl(var(--foreground));
   }
 
-  .text-readable-bold {
-    @apply text-foreground leading-relaxed font-semibold;
+  .text-readable-muted {
+    @apply text-muted-foreground;
+    color: hsl(var(--muted-foreground));
   }
 
-  .text-readable-light {
-    @apply text-muted-foreground leading-relaxed;
+  .text-readable-secondary {
+    @apply text-secondary-foreground;
+    color: hsl(var(--secondary-foreground));
+  }
+
+  /* Card improvements for better readability */
+  .enhanced-card {
+    @apply bg-card text-card-foreground border border-border;
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
+    border-color: hsl(var(--border));
+  }
+
+  /* Button text improvements */
+  .btn-text {
+    color: inherit;
+  }
+
+  /* Input improvements */
+  .enhanced-input {
+    @apply bg-background text-foreground border-border;
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    border-color: hsl(var(--border));
+  }
+
+  .dark .enhanced-input {
+    @apply bg-card text-card-foreground;
+    background-color: hsl(var(--card));
+    color: hsl(var(--card-foreground));
   }
 }
 
