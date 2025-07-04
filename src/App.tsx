@@ -1,4 +1,3 @@
-
 import { Toaster } from "@/components/ui/toaster";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -6,8 +5,6 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/AppSidebar";
-import { ThemeProvider } from "./contexts/ThemeContext";
-import { ThemeToggle } from "./components/ThemeToggle";
 import LoginScreen from "./pages/LoginScreen";
 import StudentDashboard from "./pages/StudentDashboard";
 import ParentDashboard from "./pages/ParentDashboard";
@@ -99,14 +96,7 @@ const AppContent = () => {
   const shouldShowSidebar = user && (user.role === 'student' || user.role === 'admin' || user.role === 'educator');
 
   if (!shouldShowSidebar) {
-    return (
-      <div className="min-h-screen relative">
-        <div className="absolute top-4 right-4 z-50">
-          <ThemeToggle />
-        </div>
-        <AppRoutes />
-      </div>
-    );
+    return <AppRoutes />;
   }
 
   return (
@@ -114,9 +104,8 @@ const AppContent = () => {
       <div className="min-h-screen flex w-full">
         <AppSidebar />
         <div className="flex-1 flex flex-col">
-          <header className="h-12 flex items-center justify-between border-b px-4">
+          <header className="h-12 flex items-center border-b px-4">
             <SidebarTrigger />
-            <ThemeToggle />
           </header>
           <main className="flex-1">
             <AppRoutes />
@@ -130,15 +119,13 @@ const AppContent = () => {
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
-      <ThemeProvider>
-        <Toaster />
-        <Sonner />
-        <BrowserRouter>
-          <AuthProvider>
-            <AppContent />
-          </AuthProvider>
-        </BrowserRouter>
-      </ThemeProvider>
+      <Toaster />
+      <Sonner />
+      <BrowserRouter>
+        <AuthProvider>
+          <AppContent />
+        </AuthProvider>
+      </BrowserRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );

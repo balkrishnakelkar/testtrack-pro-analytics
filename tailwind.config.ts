@@ -26,43 +26,47 @@ export default {
 				background: 'hsl(var(--background))',
 				foreground: 'hsl(var(--foreground))',
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: '#1A73E8',
+					foreground: '#FFFFFF'
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
-					foreground: 'hsl(var(--secondary-foreground))'
+					DEFAULT: '#F5F5F5',
+					foreground: '#212121'
+				},
+				success: {
+					DEFAULT: '#34A853',
+					foreground: '#FFFFFF'
 				},
 				destructive: {
-					DEFAULT: 'hsl(var(--destructive))',
-					foreground: 'hsl(var(--destructive-foreground))'
+					DEFAULT: '#EA4335',
+					foreground: '#FFFFFF'
 				},
 				muted: {
-					DEFAULT: 'hsl(var(--muted))',
-					foreground: 'hsl(var(--muted-foreground))'
+					DEFAULT: '#F8F9FA',
+					foreground: '#5F6368'
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
-					foreground: 'hsl(var(--accent-foreground))'
+					DEFAULT: '#E8F0FE',
+					foreground: '#1A73E8'
 				},
 				popover: {
-					DEFAULT: 'hsl(var(--popover))',
-					foreground: 'hsl(var(--popover-foreground))'
+					DEFAULT: '#FFFFFF',
+					foreground: '#212121'
 				},
 				card: {
-					DEFAULT: 'hsl(var(--card))',
-					foreground: 'hsl(var(--card-foreground))'
+					DEFAULT: '#FFFFFF',
+					foreground: '#212121'
 				},
 			},
 			fontSize: {
-				'xs': ['0.75rem', { lineHeight: '1.5', letterSpacing: '0.025em' }],
-				'sm': ['0.875rem', { lineHeight: '1.5', letterSpacing: '0.025em' }],
-				'base': ['1rem', { lineHeight: '1.6', letterSpacing: '0.0125em' }],
-				'lg': ['1.125rem', { lineHeight: '1.6', letterSpacing: '0.0125em' }],
-				'xl': ['1.25rem', { lineHeight: '1.5', letterSpacing: '0.0125em' }],
-				'2xl': ['1.5rem', { lineHeight: '1.4', letterSpacing: '0.0125em' }],
-				'3xl': ['1.875rem', { lineHeight: '1.3', letterSpacing: '0.0125em' }],
-				'4xl': ['2.25rem', { lineHeight: '1.2', letterSpacing: '0.0125em' }],
+				'xs': ['0.875rem', { lineHeight: '1.6' }],
+				'sm': ['1rem', { lineHeight: '1.6' }],
+				'base': ['1.125rem', { lineHeight: '1.7' }],
+				'lg': ['1.25rem', { lineHeight: '1.7' }],
+				'xl': ['1.375rem', { lineHeight: '1.6' }],
+				'2xl': ['1.625rem', { lineHeight: '1.5' }],
+				'3xl': ['2rem', { lineHeight: '1.4' }],
+				'4xl': ['2.5rem', { lineHeight: '1.3' }],
 			},
 			borderRadius: {
 				lg: 'var(--radius)',
