@@ -95,199 +95,207 @@ const StudentDashboard = () => {
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="enterprise-card animate-fade-in">
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground font-medium">Overall Score</p>
-                <p className="text-3xl font-bold text-primary">87%</p>
-              </div>
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                <Target className="h-6 w-6 text-primary" />
-              </div>
+        <div className="metric-card animate-fade-in">
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center">
+              <Target className="h-6 w-6 text-primary" />
             </div>
-          </CardContent>
-        </Card>
+            <span className="status-success">A+</span>
+          </div>
+          <div className="metric-value">87%</div>
+          <div className="metric-label">Overall Score</div>
+        </div>
 
-        <Card className="enterprise-card animate-fade-in" style={{animationDelay: "0.1s"}}>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground font-medium">Tests Completed</p>
-                <p className="text-3xl font-bold text-accent-foreground">12</p>
-              </div>
-              <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center">
-                <Award className="h-6 w-6 text-accent-foreground" />
-              </div>
+        <div className="metric-card animate-fade-in" style={{animationDelay: "0.1s"}}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-success/10 rounded-xl flex items-center justify-center">
+              <Award className="h-6 w-6 text-success" />
             </div>
-          </CardContent>
-        </Card>
+            <span className="status-info">Active</span>
+          </div>
+          <div className="metric-value">12</div>
+          <div className="metric-label">Tests Completed</div>
+        </div>
 
-        <Card className="enterprise-card animate-fade-in" style={{animationDelay: "0.2s"}}>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground font-medium">Upcoming Tests</p>
-                <p className="text-3xl font-bold text-secondary-foreground">3</p>
-              </div>
-              <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
-                <Calendar className="h-6 w-6 text-secondary-foreground" />
-              </div>
+        <div className="metric-card animate-fade-in" style={{animationDelay: "0.2s"}}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-warning/10 rounded-xl flex items-center justify-center">
+              <Calendar className="h-6 w-6 text-warning" />
             </div>
-          </CardContent>
-        </Card>
+            <span className="status-warning">Due Soon</span>
+          </div>
+          <div className="metric-value">3</div>
+          <div className="metric-label">Upcoming Tests</div>
+        </div>
 
-        <Card className="enterprise-card animate-fade-in" style={{animationDelay: "0.3s"}}>
-          <CardContent className="p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-sm text-muted-foreground font-medium">Study Streak</p>
-                <p className="text-3xl font-bold text-primary">7 days</p>
-              </div>
-              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                <Star className="h-6 w-6 text-primary" />
-              </div>
+        <div className="metric-card animate-fade-in" style={{animationDelay: "0.3s"}}>
+          <div className="flex items-center justify-between mb-4">
+            <div className="w-12 h-12 bg-info/10 rounded-xl flex items-center justify-center">
+              <Star className="h-6 w-6 text-info" />
             </div>
-          </CardContent>
-        </Card>
+            <span className="status-success">On Fire</span>
+          </div>
+          <div className="metric-value">7</div>
+          <div className="metric-label">Day Streak</div>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column - Main Content */}
         <div className="lg:col-span-2 space-y-8">
           {/* Upcoming Tests */}
-          <Card className="enterprise-card">
+          <div className="elite-card-featured">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2 text-foreground">
-                <Calendar className="h-5 w-5 text-primary" />
+              <CardTitle className="flex items-center space-x-3 text-foreground text-xl">
+                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <Calendar className="h-5 w-5 text-primary" />
+                </div>
                 <span>Upcoming Tests</span>
               </CardTitle>
-              <CardDescription>
-                Your scheduled assessments
+              <CardDescription className="text-muted-foreground">
+                Your scheduled assessments for this week
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {upcomingTests.map((test, index) => (
-                  <div key={test.id} className="enterprise-card p-4 animate-slide-in" style={{animationDelay: `${index * 0.1}s`}}>
-                    <h3 className="font-semibold mb-2 text-foreground">{test.subject}</h3>
-                    <p className="text-sm text-muted-foreground mb-2">{test.topic}</p>
-                    <div className="flex justify-between text-sm mb-3 text-muted-foreground">
-                      <span>{test.date}</span>
-                      <span>{test.time}</span>
+                  <div key={test.id} className="elite-card p-6 animate-slide-in" style={{animationDelay: `${index * 0.1}s`}}>
+                    <div className="flex items-center justify-between mb-4">
+                      <div>
+                        <h3 className="font-semibold text-lg text-foreground mb-1">{test.subject}</h3>
+                        <p className="text-muted-foreground">{test.topic}</p>
+                      </div>
+                      <div className="text-right text-sm text-muted-foreground">
+                        <div>{test.date}</div>
+                        <div className="font-semibold text-primary">{test.time}</div>
+                      </div>
                     </div>
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">{test.duration}</span>
-                      <Button 
-                        size="sm" 
-                        className="enterprise-button"
+                      <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                        <Clock className="h-4 w-4" />
+                        <span>{test.duration}</span>
+                      </div>
+                      <button 
+                        className="elite-btn-primary"
                         onClick={() => navigate(`/test/${test.id}`)}
                       >
                         Start Test
-                      </Button>
+                      </button>
                     </div>
                   </div>
                 ))}
               </div>
             </CardContent>
-          </Card>
+          </div>
 
           {/* Subject Progress */}
-          <Card className="enterprise-card">
+          <div className="elite-card-featured">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2 text-foreground">
-                <BookOpen className="h-5 w-5 text-primary" />
+              <CardTitle className="flex items-center space-x-3 text-foreground text-xl">
+                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <BookOpen className="h-5 w-5 text-primary" />
+                </div>
                 <span>Subject Progress</span>
               </CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Track your learning progress across subjects
+              </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
                 {subjectProgress.map((subject, index) => (
-                  <div key={subject.subject} className="space-y-3 p-4 rounded-lg bg-secondary/50" style={{animationDelay: `${index * 0.1}s`}}>
-                    <div className="flex justify-between items-center">
-                      <span className="font-semibold text-foreground">{subject.subject}</span>
-                      <span className="text-sm text-muted-foreground">{subject.tests} tests</span>
+                  <div key={subject.subject} className="elite-card p-5" style={{animationDelay: `${index * 0.1}s`}}>
+                    <div className="flex justify-between items-center mb-3">
+                      <span className="font-semibold text-foreground text-lg">{subject.subject}</span>
+                      <div className="text-sm text-muted-foreground bg-secondary px-3 py-1 rounded-full">
+                        {subject.tests} tests completed
+                      </div>
                     </div>
-                    <div className="progress-modern">
+                    <div className="elite-progress mb-3">
                       <div 
-                        className="progress-modern-fill" 
+                        className="elite-progress-fill" 
                         style={{width: `${subject.progress}%`}}
                       />
                     </div>
-                    <div className="flex justify-between text-sm text-muted-foreground">
-                      <span>Progress</span>
-                      <span className="font-semibold text-primary">{subject.progress}%</span>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-muted-foreground">Progress</span>
+                      <span className="font-bold text-primary text-lg">{subject.progress}%</span>
                     </div>
                   </div>
                 ))}
               </div>
             </CardContent>
-          </Card>
+          </div>
         </div>
 
         {/* Right Column - Sidebar */}
         <div className="space-y-6">
           {/* Recent Test Results */}
-          <Card className="enterprise-card">
+          <div className="elite-card">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2 text-foreground">
-                <TrendingUp className="h-5 w-5 text-primary" />
+              <CardTitle className="flex items-center space-x-3 text-foreground">
+                <div className="w-8 h-8 bg-primary/10 rounded-lg flex items-center justify-center">
+                  <TrendingUp className="h-5 w-5 text-primary" />
+                </div>
                 <span>Recent Results</span>
               </CardTitle>
-              <CardDescription>
-                Your latest performance
+              <CardDescription className="text-muted-foreground">
+                Your latest test performance
               </CardDescription>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
                 {recentTests.map((test, index) => (
-                  <div key={test.id} className="enterprise-card p-4 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
-                    <div className="flex items-center space-x-2 mb-2">
-                      <h3 className="font-semibold text-sm text-foreground">{test.subject}</h3>
-                      <Badge variant={test.score >= 90 ? 'default' : test.score >= 70 ? 'secondary' : 'destructive'}>
-                        {test.grade}
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground mb-3">{test.topic}</p>
-                    <div className="flex justify-between items-center">
-                      <div className="flex items-center space-x-2 text-xs text-muted-foreground">
-                        <Calendar className="h-3 w-3" />
-                        <span>{test.date}</span>
+                  <div key={test.id} className="elite-card p-4 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+                    <div className="flex items-center justify-between mb-3">
+                      <div>
+                        <h3 className="font-semibold text-foreground">{test.subject}</h3>
+                        <p className="text-xs text-muted-foreground">{test.topic}</p>
                       </div>
                       <div className="text-right">
-                        <div className="text-xl font-bold text-primary">{test.score}%</div>
+                        <div className="text-2xl font-bold text-primary">{test.score}%</div>
+                        <span className={`status-${test.score >= 90 ? 'success' : test.score >= 70 ? 'info' : 'warning'}`}>
+                          {test.grade}
+                        </span>
                       </div>
+                    </div>
+                    <div className="flex items-center text-xs text-muted-foreground">
+                      <Calendar className="h-3 w-3 mr-1" />
+                      <span>{test.date}</span>
                     </div>
                   </div>
                 ))}
               </div>
             </CardContent>
-          </Card>
+          </div>
 
           {/* Quick Actions */}
-          <Card className="enterprise-card">
+          <div className="elite-card">
             <CardHeader>
               <CardTitle className="text-foreground">Quick Actions</CardTitle>
+              <CardDescription className="text-muted-foreground">
+                Fast access to key features
+              </CardDescription>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button variant="secondary" className="w-full justify-start enterprise-button-secondary">
-                <BookOpen className="mr-2 h-4 w-4" />
+              <button className="elite-btn-ghost w-full justify-start">
+                <BookOpen className="mr-3 h-5 w-5" />
                 Study Materials
-              </Button>
-              <Button variant="secondary" className="w-full justify-start enterprise-button-secondary">
-                <Calendar className="mr-2 h-4 w-4" />
+              </button>
+              <button className="elite-btn-ghost w-full justify-start">
+                <Calendar className="mr-3 h-5 w-5" />
                 View Schedule
-              </Button>
-              <Button variant="secondary" className="w-full justify-start enterprise-button-secondary">
-                <TrendingUp className="mr-2 h-4 w-4" />
+              </button>
+              <button className="elite-btn-ghost w-full justify-start">
+                <TrendingUp className="mr-3 h-5 w-5" />
                 Performance Report
-              </Button>
-              <Button variant="secondary" className="w-full justify-start enterprise-button-secondary">
-                <Award className="mr-2 h-4 w-4" />
+              </button>
+              <button className="elite-btn-ghost w-full justify-start">
+                <Award className="mr-3 h-5 w-5" />
                 Achievements
-              </Button>
+              </button>
             </CardContent>
-          </Card>
+          </div>
         </div>
       </div>
     </div>
