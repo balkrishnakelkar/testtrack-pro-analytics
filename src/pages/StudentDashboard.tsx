@@ -82,24 +82,24 @@ const StudentDashboard = () => {
   ]);
 
   return (
-    <div className="p-6 space-y-6">
+    <div className="p-6 space-y-6 bg-background">
       {/* Welcome Section */}
       <div className="mb-8">
-        <h1 className="text-3xl font-roboto-slab font-bold text-foreground mb-2">
+        <h1 className="text-4xl font-semibold text-foreground mb-2">
           Welcome back, {user?.name?.split(' ')[0]}!
         </h1>
-        <p className="text-muted-foreground">
+        <p className="text-lg text-muted-foreground">
           Ready to continue your learning journey? Let's see how you're progressing.
         </p>
       </div>
 
       {/* Stats Overview */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        <Card className="card-hover enhanced-glow">
+        <Card className="enterprise-card animate-fade-in">
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Overall Score</p>
+                <p className="text-sm text-muted-foreground font-medium">Overall Score</p>
                 <p className="text-3xl font-bold text-primary">87%</p>
               </div>
               <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
@@ -109,43 +109,43 @@ const StudentDashboard = () => {
           </CardContent>
         </Card>
 
-        <Card className="card-hover enhanced-glow">
+        <Card className="enterprise-card animate-fade-in" style={{animationDelay: "0.1s"}}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Tests Completed</p>
-                <p className="text-3xl font-bold text-green-600">12</p>
+                <p className="text-sm text-muted-foreground font-medium">Tests Completed</p>
+                <p className="text-3xl font-bold text-accent-foreground">12</p>
               </div>
-              <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                <Award className="h-6 w-6 text-green-600" />
+              <div className="w-12 h-12 bg-accent rounded-full flex items-center justify-center">
+                <Award className="h-6 w-6 text-accent-foreground" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="card-hover enhanced-glow">
+        <Card className="enterprise-card animate-fade-in" style={{animationDelay: "0.2s"}}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Upcoming Tests</p>
-                <p className="text-3xl font-bold text-amber-600">3</p>
+                <p className="text-sm text-muted-foreground font-medium">Upcoming Tests</p>
+                <p className="text-3xl font-bold text-secondary-foreground">3</p>
               </div>
-              <div className="w-12 h-12 bg-amber-100 rounded-full flex items-center justify-center">
-                <Calendar className="h-6 w-6 text-amber-600" />
+              <div className="w-12 h-12 bg-secondary rounded-full flex items-center justify-center">
+                <Calendar className="h-6 w-6 text-secondary-foreground" />
               </div>
             </div>
           </CardContent>
         </Card>
 
-        <Card className="card-hover enhanced-glow">
+        <Card className="enterprise-card animate-fade-in" style={{animationDelay: "0.3s"}}>
           <CardContent className="p-6">
             <div className="flex items-center justify-between">
               <div>
-                <p className="text-sm text-muted-foreground">Study Streak</p>
-                <p className="text-3xl font-bold text-purple-600">7 days</p>
+                <p className="text-sm text-muted-foreground font-medium">Study Streak</p>
+                <p className="text-3xl font-bold text-primary">7 days</p>
               </div>
-              <div className="w-12 h-12 bg-purple-100 rounded-full flex items-center justify-center">
-                <Star className="h-6 w-6 text-purple-600" />
+              <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
+                <Star className="h-6 w-6 text-primary" />
               </div>
             </div>
           </CardContent>
@@ -156,9 +156,9 @@ const StudentDashboard = () => {
         {/* Left Column - Main Content */}
         <div className="lg:col-span-2 space-y-8">
           {/* Upcoming Tests */}
-          <Card className="morphing-shadow">
+          <Card className="enterprise-card">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-foreground">
                 <Calendar className="h-5 w-5 text-primary" />
                 <span>Upcoming Tests</span>
               </CardTitle>
@@ -168,11 +168,11 @@ const StudentDashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {upcomingTests.map((test) => (
-                  <div key={test.id} className="p-4 border rounded-lg gradient-border">
-                    <h3 className="font-medium mb-2">{test.subject}</h3>
+                {upcomingTests.map((test, index) => (
+                  <div key={test.id} className="enterprise-card p-4 animate-slide-in" style={{animationDelay: `${index * 0.1}s`}}>
+                    <h3 className="font-semibold mb-2 text-foreground">{test.subject}</h3>
                     <p className="text-sm text-muted-foreground mb-2">{test.topic}</p>
-                    <div className="flex justify-between text-sm mb-3">
+                    <div className="flex justify-between text-sm mb-3 text-muted-foreground">
                       <span>{test.date}</span>
                       <span>{test.time}</span>
                     </div>
@@ -180,6 +180,7 @@ const StudentDashboard = () => {
                       <span className="text-sm text-muted-foreground">{test.duration}</span>
                       <Button 
                         size="sm" 
+                        className="enterprise-button"
                         onClick={() => navigate(`/test/${test.id}`)}
                       >
                         Start Test
@@ -192,25 +193,30 @@ const StudentDashboard = () => {
           </Card>
 
           {/* Subject Progress */}
-          <Card className="morphing-shadow">
+          <Card className="enterprise-card">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-foreground">
                 <BookOpen className="h-5 w-5 text-primary" />
                 <span>Subject Progress</span>
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-6">
-                {subjectProgress.map((subject) => (
-                  <div key={subject.subject} className="space-y-2">
+                {subjectProgress.map((subject, index) => (
+                  <div key={subject.subject} className="space-y-3 p-4 rounded-lg bg-secondary/50" style={{animationDelay: `${index * 0.1}s`}}>
                     <div className="flex justify-between items-center">
-                      <span className="font-medium">{subject.subject}</span>
+                      <span className="font-semibold text-foreground">{subject.subject}</span>
                       <span className="text-sm text-muted-foreground">{subject.tests} tests</span>
                     </div>
-                    <Progress value={subject.progress} className="h-3" />
+                    <div className="progress-modern">
+                      <div 
+                        className="progress-modern-fill" 
+                        style={{width: `${subject.progress}%`}}
+                      />
+                    </div>
                     <div className="flex justify-between text-sm text-muted-foreground">
                       <span>Progress</span>
-                      <span>{subject.progress}%</span>
+                      <span className="font-semibold text-primary">{subject.progress}%</span>
                     </div>
                   </div>
                 ))}
@@ -222,9 +228,9 @@ const StudentDashboard = () => {
         {/* Right Column - Sidebar */}
         <div className="space-y-6">
           {/* Recent Test Results */}
-          <Card className="morphing-shadow">
+          <Card className="enterprise-card">
             <CardHeader>
-              <CardTitle className="flex items-center space-x-2">
+              <CardTitle className="flex items-center space-x-2 text-foreground">
                 <TrendingUp className="h-5 w-5 text-primary" />
                 <span>Recent Results</span>
               </CardTitle>
@@ -234,22 +240,22 @@ const StudentDashboard = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {recentTests.map((test) => (
-                  <div key={test.id} className="p-4 border rounded-lg test-card">
-                    <div className="flex items-center space-x-2 mb-1">
-                      <h3 className="font-medium text-sm">{test.subject}</h3>
+                {recentTests.map((test, index) => (
+                  <div key={test.id} className="enterprise-card p-4 animate-fade-in" style={{animationDelay: `${index * 0.1}s`}}>
+                    <div className="flex items-center space-x-2 mb-2">
+                      <h3 className="font-semibold text-sm text-foreground">{test.subject}</h3>
                       <Badge variant={test.score >= 90 ? 'default' : test.score >= 70 ? 'secondary' : 'destructive'}>
                         {test.grade}
                       </Badge>
                     </div>
-                    <p className="text-xs text-muted-foreground mb-2">{test.topic}</p>
+                    <p className="text-xs text-muted-foreground mb-3">{test.topic}</p>
                     <div className="flex justify-between items-center">
                       <div className="flex items-center space-x-2 text-xs text-muted-foreground">
                         <Calendar className="h-3 w-3" />
                         <span>{test.date}</span>
                       </div>
                       <div className="text-right">
-                        <div className="text-lg font-bold text-primary">{test.score}%</div>
+                        <div className="text-xl font-bold text-primary">{test.score}%</div>
                       </div>
                     </div>
                   </div>
@@ -259,24 +265,24 @@ const StudentDashboard = () => {
           </Card>
 
           {/* Quick Actions */}
-          <Card className="morphing-shadow">
+          <Card className="enterprise-card">
             <CardHeader>
-              <CardTitle>Quick Actions</CardTitle>
+              <CardTitle className="text-foreground">Quick Actions</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
-              <Button variant="outline" className="w-full justify-start enhanced-glow">
+              <Button variant="secondary" className="w-full justify-start enterprise-button-secondary">
                 <BookOpen className="mr-2 h-4 w-4" />
                 Study Materials
               </Button>
-              <Button variant="outline" className="w-full justify-start enhanced-glow">
+              <Button variant="secondary" className="w-full justify-start enterprise-button-secondary">
                 <Calendar className="mr-2 h-4 w-4" />
                 View Schedule
               </Button>
-              <Button variant="outline" className="w-full justify-start enhanced-glow">
+              <Button variant="secondary" className="w-full justify-start enterprise-button-secondary">
                 <TrendingUp className="mr-2 h-4 w-4" />
                 Performance Report
               </Button>
-              <Button variant="outline" className="w-full justify-start enhanced-glow">
+              <Button variant="secondary" className="w-full justify-start enterprise-button-secondary">
                 <Award className="mr-2 h-4 w-4" />
                 Achievements
               </Button>
